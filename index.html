@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VIBEZ – Web Player: Music for everyone</title>
+  <!-- Custom VIBEZ Favicon SVG -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23121212'/%3E%3Cpath d='M5 8L11 23L16 11L18 16L20 9L27 8' stroke='%231ed760' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='11' cy='23' r='2' fill='%2300f2fe'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="theme-dark">
+  <div id="app" class="app-layout">
+    
+    <!-- ================= LEFT SIDEBAR ================= -->
+    <aside class="sidebar" id="sidebar">
+      <!-- Navigation Card -->
+      <div class="nav-card">
+        <div class="brand-logo" id="brandLogo" title="VIBEZ Home">
+          <svg class="brand-logo-icon" viewBox="0 0 32 32" width="34" height="34" fill="none">
+            <defs>
+              <linearGradient id="vibezGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#1ed760"/>
+                <stop offset="50%" stop-color="#00f2fe"/>
+                <stop offset="100%" stop-color="#1db954"/>
+              </linearGradient>
+            </defs>
+            <rect width="32" height="32" rx="8" fill="#1e1e1e"/>
+            <path d="M5 8L11 23L16 11L18 16L20 9L27 8" stroke="url(#vibezGrad)" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="11" cy="23" r="2" fill="#1ed760"/>
+            <circle cx="16" cy="11" r="1.6" fill="#00f2fe"/>
+          </svg>
+          <span class="brand-title">VIBEZ</span>
+        </div>
+
+        <nav class="primary-nav">
+          <button class="nav-item active" id="navHomeBtn" data-view="home">
+            <svg viewBox="0 0 24 24" width="24" height="24" class="nav-icon"><path fill="currentColor" d="M12.5 3.247a1 1 0 0 0-1 0L4 7.577V20h4.5v-6a1 1 0 0 1 1-1h5a1 1 0 0 1 1 1v6H20V7.577l-7.5-4.33zm-2-1.732a3 3 0 0 1 3 0l7.5 4.33A2 2 0 0 1 22 7.577V21a1 1 0 0 1-1 1h-6.5a1 1 0 0 1-1-1v-5h-3v5a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V7.577a2 2 0 0 1 1-1.732l7.5-4.33z"/></svg>
+            <span>Home</span>
+          </button>
+          <button class="nav-item" id="navSearchBtn" data-view="search">
+            <svg viewBox="0 0 24 24" width="24" height="24" class="nav-icon"><path fill="currentColor" d="M10.533 1.279c-5.18 0-9.407 4.14-9.407 9.279s4.226 9.279 9.407 9.279c2.234 0 4.29-.77 5.907-2.058l4.353 4.353a1 1 0 1 0 1.414-1.414l-4.344-4.344a9.157 9.157 0 0 0 2.077-5.816c0-5.14-4.226-9.28-9.407-9.28zm-7.407 9.279c0-4.006 3.302-7.28 7.407-7.28s7.407 3.274 7.407 7.28-3.302 7.279-7.407 7.279-7.407-3.273-7.407-7.28z"/></svg>
+            <span>Search</span>
+          </button>
+        </nav>
+      </div>
+
+      <!-- Library Card -->
+      <div class="library-card">
+        <div class="library-header">
+          <button class="library-toggle-btn" id="libToggleBtn" title="Your Library">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+              <path d="M3 22a1 1 0 0 1-1-1V3a1 1 0 0 1 2 0v18a1 1 0 0 1-1 1zM15.5 2.134A1 1 0 0 0 14 3v18a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V3a1 1 0 0 0-1.5-.866l-5 2.887V3a1 1 0 0 0-.5-.866zM16 19.268l4-2.309V4.732l-4 2.31v12.226zM7.5 2.134A1 1 0 0 0 6 3v18a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1V3a1 1 0 0 0-.5-.866l-1-.577z"/>
+            </svg>
+            <span>Your Library</span>
+          </button>
+          <div class="library-actions">
+            <button class="icon-btn-round" id="createPlaylistBtn" title="Create playlist or folder">
+              <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M15.25 8a.75.75 0 0 1-.75.75H8.75v5.75a.75.75 0 0 1-1.5 0V8.75H1.5a.75.75 0 0 1 0-1.5h5.75V1.5a.75.75 0 0 1 1.5 0v5.75h5.75a.75.75 0 0 1 .75.75z"/></svg>
+            </button>
+            <button class="icon-btn-round" id="viewMoreLibBtn" title="Expand your library">
+              <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M7.19 1.57a.75.75 0 0 1 1.06 0l5.5 5.5a.75.75 0 0 1 0 1.06l-5.5 5.5a.75.75 0 1 1-1.06-1.06L11.94 8.5H1.75a.75.75 0 0 1 0-1.5h10.19L7.19 2.63a.75.75 0 0 1 0-1.06z"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Filter Chips in Library -->
+        <div class="library-chips">
+          <button class="chip active" id="chipLibPlaylists" data-lib-filter="playlists">Playlists</button>
+          <button class="chip" id="chipLibArtists" data-lib-filter="artists">Artists</button>
+          <button class="chip" id="chipLibAlbums" data-lib-filter="albums">Albums</button>
+        </div>
+
+        <!-- Sub Search and Sort -->
+        <div class="library-subbar">
+          <div class="lib-search-box">
+            <button class="icon-btn-micro" id="libSearchToggle" title="Search in Your Library">
+              <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M7 1.75a5.25 5.25 0 1 0 0 10.5 5.25 5.25 0 0 0 0-10.5zM.25 7a6.75 6.75 0 1 1 12.096 4.12l3.184 3.185a.75.75 0 1 1-1.06 1.06L11.28 12.18A6.75 6.75 0 0 1 .25 7z"/></svg>
+            </button>
+            <input type="text" id="libSearchInput" placeholder="Search in Your Library" class="lib-search-input">
+          </div>
+          
+          <div class="lib-sort-wrapper">
+            <button class="lib-sort-btn" id="libSortBtn">
+              <span id="currentSortLabel">Recents</span>
+              <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M15 14.5H5V13h10v1.5zm0-5.75H1v-1.5h14v1.5zM15 3H9V1.5h6V3z"/></svg>
+            </button>
+            <div class="sort-dropdown-menu" id="sortDropdownMenu">
+              <button class="sort-opt active" data-sort="recents">Recents</button>
+              <button class="sort-opt" data-sort="alpha">Alphabetical</button>
+              <button class="sort-opt" data-sort="creator">Creator</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Playlists List -->
+        <div class="library-list-container custom-scrollbar" id="libraryList">
+          <!-- Liked Songs Item (Pinned) -->
+          <div class="lib-item pinned" id="libLikedSongs" data-view="liked">
+            <div class="lib-cover liked-cover-gradient">
+              <svg viewBox="0 0 16 16" width="20" height="20" fill="currentColor"><path d="M15.724 4.22A4.313 4.313 0 0 0 12.192.814a4.269 4.269 0 0 0-3.622 1.13.837.837 0 0 1-1.14 0 4.272 4.272 0 0 0-3.62-1.13 4.315 4.315 0 0 0-3.533 3.406c-.363 2.584.57 5.107 2.406 6.911l5.443 5.347a.75.75 0 0 0 1.05 0l5.443-5.347c1.836-1.804 2.77-4.327 2.407-6.911z"/></svg>
+            </div>
+            <div class="lib-info">
+              <span class="lib-title">Liked Songs</span>
+              <span class="lib-subtitle"><svg viewBox="0 0 16 16" width="12" height="12" fill="#1ed760" style="margin-right:4px;"><path d="M8.822.797a.75.75 0 0 0-.644 0l-7 3.5A.75.75 0 0 0 .75 5v5.5a.75.75 0 0 0 .428.673l7 3.5a.75.75 0 0 0 .644 0l7-3.5A.75.75 0 0 0 16.25 10.5V5a.75.75 0 0 0-.428-.673l-7-3.5z"/></svg> Playlist • <span id="libLikedCount">4</span> songs</span>
+            </div>
+          </div>
+
+          <!-- Dynamic Playlist / Library Items rendered by JS -->
+          <div id="customPlaylistsList"></div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ================= MAIN CONTAINER ================= -->
+    <main class="main-container" id="mainContainer">
+      <!-- Sticky Topbar (ALWAYS VISIBLE & WORKING) -->
+      <header class="topbar" id="topbar">
+        <div class="topbar-left">
+          <div class="history-controls">
+            <button class="circle-btn" id="historyBackBtn" title="Go back" disabled>
+              <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M11.03.47a.75.75 0 0 1 0 1.06L4.56 8l6.47 6.47a.75.75 0 1 1-1.06 1.06L2.44 8 9.97.47a.75.75 0 0 1 1.06 0z"/></svg>
+            </button>
+            <button class="circle-btn" id="historyForwardBtn" title="Go forward" disabled>
+              <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M4.97.47a.75.75 0 0 0 0 1.06L11.44 8 4.97 14.47a.75.75 0 1 0 1.06 1.06L13.56 8 6.03.47a.75.75 0 0 0-1.06 0z"/></svg>
+            </button>
+          </div>
+
+          <!-- Quick Home Icon Button -->
+          <button class="circle-btn topbar-home-btn" id="topbarHomeBtn" title="Home">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12.5 3.247a1 1 0 0 0-1 0L4 7.577V20h4.5v-6a1 1 0 0 1 1-1h5a1 1 0 0 1 1 1v6H20V7.577l-7.5-4.33z"/></svg>
+          </button>
+
+          <!-- PROMINENT GLOBAL SEARCH BAR -->
+          <div class="search-input-wrapper" id="topbarSearchWrapper">
+            <svg class="search-icon" viewBox="0 0 24 24" width="22" height="22" fill="#b3b3b3"><path d="M10.533 1.279c-5.18 0-9.407 4.14-9.407 9.279s4.226 9.279 9.407 9.279c2.234 0 4.29-.77 5.907-2.058l4.353 4.353a1 1 0 1 0 1.414-1.414l-4.344-4.344a9.157 9.157 0 0 0 2.077-5.816c0-5.14-4.226-9.28-9.407-9.28zm-7.407 9.279c0-4.006 3.302-7.28 7.407-7.28s7.407 3.274 7.407 7.28-3.302 7.279-7.407 7.279-7.407-3.273-7.407-7.28z"/></svg>
+            <input type="text" id="globalSearchInput" placeholder="What do you want to play? (Search 21 songs, artists...)" autocomplete="off" spellcheck="false">
+            <button class="search-clear-btn" id="searchClearBtn" title="Clear search">
+              <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M2.47 2.47a.75.75 0 0 1 1.06 0L8 6.94l4.47-4.47a.75.75 0 1 1 1.06 1.06L9.06 8l4.47 4.47a.75.75 0 1 1-1.06 1.06L8 9.06l-4.47 4.47a.75.75 0 0 1-1.06-1.06L6.94 8 2.47 3.53a.75.75 0 0 1 0-1.06z"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="topbar-right">
+          <button class="pill-btn premium-btn" id="premiumBtn" title="Explore Premium plans">Explore Premium</button>
+          <button class="pill-btn install-btn" id="installBtn" title="Install VIBEZ App">
+            <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M4.995 8.745a.75.75 0 0 1 1.06 0L7.25 9.939V1.75a.75.75 0 0 1 1.5 0v8.189l1.195-1.194a.75.75 0 1 1 1.06 1.06L8 12.81 4.995 9.805a.75.75 0 0 1 0-1.06zM1.75 12.5a.75.75 0 0 1 .75.75v1.25h11V13.25a.75.75 0 0 1 1.5 0v2a.75.75 0 0 1-.75.75H2.5a.75.75 0 0 1-.75-.75v-2a.75.75 0 0 1 .75-.75z"/></svg>
+            <span>Install App</span>
+          </button>
+          
+          <div class="notifications-wrapper">
+            <button class="circle-btn notification-btn" id="notificationBtn" title="What's New">
+              <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M8 1.5a4 4 0 0 0-4 4v3.268l-.938 1.876A.75.75 0 0 0 3.732 12h8.536a.75.75 0 0 0 .67-1.356L12 8.768V5.5a4 4 0 0 0-4-4zM6 13.5a2 2 0 1 0 4 0H6z"/></svg>
+              <span class="notification-dot"></span>
+            </button>
+            <div class="notifications-flyout" id="notificationsFlyout">
+              <div class="notif-header">
+                <h4>What's New on VIBEZ</h4>
+                <span class="notif-badge">New release</span>
+              </div>
+              <div class="notif-list">
+                <div class="notif-item" data-track-id="21">
+                  <div class="notif-avatar" style="background:#3d6a99;">LG</div>
+                  <div class="notif-text">
+                    <p><strong>Lady Gaga & Bruno Mars</strong> released <em>Die With A Smile (Acoustic)</em></p>
+                    <span class="notif-time">Just added</span>
+                  </div>
+                </div>
+                <div class="notif-item" data-track-id="20">
+                  <div class="notif-avatar" style="background:#c98a3c;">SH</div>
+                  <div class="notif-text">
+                    <p><strong>She & Him</strong> released <em>I Thought I Saw Your Face Today</em></p>
+                    <span class="notif-time">Just added</span>
+                  </div>
+                </div>
+                <div class="notif-item" data-track-id="17">
+                  <div class="notif-avatar" style="background:#b31d3d;">DL</div>
+                  <div class="notif-text">
+                    <p><strong>Dua Lipa</strong> released <em>Training Season</em></p>
+                    <span class="notif-time">Yesterday</span>
+                  </div>
+                </div>
+                <div class="notif-item" data-track-id="18">
+                  <div class="notif-avatar" style="background:#463078;">DJ</div>
+                  <div class="notif-text">
+                    <p><strong>Djo</strong> trending #1 globally with <em>End of Beginning</em></p>
+                    <span class="notif-time">2 days ago</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- User Profile Pill -->
+          <div class="user-menu-wrapper">
+            <button class="user-avatar-btn" id="userProfileBtn" title="User Profile">
+              <div class="avatar-img">
+                <span>VZ</span>
+              </div>
+            </button>
+            <div class="dropdown-menu" id="userDropdown">
+              <a href="#" class="dropdown-item" id="menuProfileBtn">Profile</a>
+              <a href="#" class="dropdown-item" id="menuPremiumBtn">Upgrade to Premium</a>
+              <a href="#" class="dropdown-item" id="shortcutsBtn">Keyboard Shortcuts</a>
+              <a href="#" class="dropdown-item" id="menuSettingsBtn">Settings</a>
+              <div class="dropdown-divider"></div>
+              <a href="#" class="dropdown-item" id="menuLogoutBtn">Log out</a>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Scrollable Main Content Area -->
+      <div class="content-scroll custom-scrollbar" id="contentScroll">
+        
+        <!-- Ambient Header Background Effect -->
+        <div class="ambient-header-bg" id="ambientHeaderBg"></div>
+
+        <!-- ================= HOME VIEW ================= -->
+        <div class="view-section active" id="homeView">
+          <!-- Filter chips for home (All, Music, Podcasts) -->
+          <div class="home-chips">
+            <button class="chip active" id="homeChipAll" data-home-filter="all">All</button>
+            <button class="chip" id="homeChipMusic" data-home-filter="music">Music</button>
+            <button class="chip" id="homeChipPodcasts" data-home-filter="podcasts">Podcasts</button>
+          </div>
+
+          <!-- Greeting -->
+          <h2 class="section-title greeting-title" id="greetingText">Good evening</h2>
+
+          <!-- Main Music Sub-container -->
+          <div id="homeMusicSubcontainer">
+            <!-- 6-Card Quick-Play Grid -->
+            <div class="quick-grid" id="quickGrid">
+              <!-- Rendered by JS -->
+            </div>
+
+            <!-- Made For You / Featured Rows -->
+            <div class="shelf-section">
+              <div class="shelf-header">
+                <h2 class="shelf-title">Made For You</h2>
+                <button class="shelf-show-all" id="showAllMadeForYou">Show all</button>
+              </div>
+              <div class="cards-row custom-scrollbar" id="madeForYouRow">
+                <!-- Rendered by JS -->
+              </div>
+            </div>
+
+            <!-- Today's Biggest Hits Row -->
+            <div class="shelf-section">
+              <div class="shelf-header">
+                <h2 class="shelf-title">Today's Biggest Hits</h2>
+                <button class="shelf-show-all" id="showAllHits">Show all</button>
+              </div>
+              <div class="cards-row custom-scrollbar" id="todaysHitsRow">
+                <!-- Rendered by JS -->
+              </div>
+            </div>
+
+            <!-- Popular Artists Row -->
+            <div class="shelf-section">
+              <div class="shelf-header">
+                <h2 class="shelf-title">Popular Artists</h2>
+                <button class="shelf-show-all">Show all</button>
+              </div>
+              <div class="cards-row custom-scrollbar" id="artistsRow">
+                <!-- Rendered by JS -->
+              </div>
+            </div>
+
+            <!-- Complete Tracklist Section -->
+            <div class="shelf-section tracklist-shelf">
+              <div class="shelf-header">
+                <div>
+                  <h2 class="shelf-title">All 21 Master Hits</h2>
+                  <p class="shelf-subtitle">Complete collection featuring all 21 loaded tracks including Lady Gaga & Bruno Mars, She & Him</p>
+                </div>
+                <button class="play-all-pill" id="playAllHomeBtn">
+                  <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M7.05 3.606l13.49 7.788a.7.7 0 0 1 0 1.212L7.05 20.394A.7.7 0 0 1 6 19.788V4.212a.7.7 0 0 1 1.05-.606z"/></svg>
+                  <span>Play All</span>
+                </button>
+              </div>
+
+              <!-- Track Table -->
+              <div class="track-table-container">
+                <div class="track-table-header">
+                  <div class="col-num">#</div>
+                  <div class="col-title">Title</div>
+                  <div class="col-album">Album</div>
+                  <div class="col-date">Date added</div>
+                  <div class="col-duration">
+                    <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M8 1.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm9-3.25V8H12v1.5H7.5V4.75H9z"/></svg>
+                  </div>
+                </div>
+                <div class="track-rows" id="homeTrackRows">
+                  <!-- Rendered by JS -->
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Podcasts Sub-container -->
+          <div id="homePodcastsSubcontainer" style="display: none;">
+            <div class="shelf-section">
+              <div class="shelf-header">
+                <h2 class="shelf-title">Featured Music Podcasts & Stories</h2>
+              </div>
+              <div class="cards-row" id="podcastsCardsRow">
+                <!-- Rendered by JS -->
+              </div>
+            </div>
+          </div>
+
+          <!-- VIBEZ Footer -->
+          <footer class="spotify-footer">
+            <div class="footer-columns">
+              <div class="footer-col">
+                <h4>Company</h4>
+                <a href="#">About VIBEZ</a>
+                <a href="#">Careers</a>
+                <a href="#">Press</a>
+              </div>
+              <div class="footer-col">
+                <h4>Communities</h4>
+                <a href="#">For Artists</a>
+                <a href="#">Developers</a>
+                <a href="#">Advertising</a>
+                <a href="#">Investors</a>
+              </div>
+              <div class="footer-col">
+                <h4>Useful links</h4>
+                <a href="#">Support</a>
+                <a href="#">Free Mobile App</a>
+              </div>
+              <div class="footer-col">
+                <h4>VIBEZ Plans</h4>
+                <a href="#">VIBEZ Premium</a>
+                <a href="#">Duo</a>
+                <a href="#">Family</a>
+                <a href="#">Student</a>
+              </div>
+            </div>
+            <div class="footer-bottom">
+              <p>© 2026 VIBEZ AB • The Modern Web Player</p>
+            </div>
+          </footer>
+        </div>
+
+        <!-- ================= SEARCH VIEW ================= -->
+        <div class="view-section" id="searchView">
+          <!-- Active Search Results Container -->
+          <div class="search-results-section" id="searchResultsSection" style="display: none;">
+            <div id="searchResultsFound">
+              <div class="search-top-row">
+                <div class="top-result-card" id="topResultCard"></div>
+                <div class="search-songs-list" id="searchSongsList">
+                  <h3 class="search-subheading">Songs</h3>
+                  <div class="search-mini-rows" id="searchMiniRows"></div>
+                </div>
+              </div>
+
+              <div class="shelf-section" id="searchArtistsShelf">
+                <h3 class="shelf-title">Artists</h3>
+                <div class="cards-row" id="searchArtistsRow"></div>
+              </div>
+            </div>
+
+            <div id="searchNoResults" style="display: none; padding: 60px 20px; text-align: center; color: var(--text-subdued);">
+              <h3 id="noResultsTitle" style="font-size: 24px; font-weight: 800; margin-bottom: 8px; color: #fff;">No results found</h3>
+              <p style="font-size: 14px;">Please check spelling or search by song title, artist name, or album across all 21 master tracks.</p>
+            </div>
+          </div>
+
+          <!-- Browse All Categories -->
+          <div class="browse-categories-section" id="browseCategoriesSection">
+            <h2 class="section-title">Browse all</h2>
+            <div class="browse-grid" id="browseGrid"></div>
+          </div>
+        </div>
+
+        <!-- ================= LIKED SONGS VIEW ================= -->
+        <div class="view-section" id="likedView">
+          <div class="playlist-hero liked-hero">
+            <div class="hero-cover liked-hero-cover">
+              <svg viewBox="0 0 16 16" width="68" height="68" fill="#ffffff"><path d="M15.724 4.22A4.313 4.313 0 0 0 12.192.814a4.269 4.269 0 0 0-3.622 1.13.837.837 0 0 1-1.14 0 4.272 4.272 0 0 0-3.62-1.13 4.315 4.315 0 0 0-3.533 3.406c-.363 2.584.57 5.107 2.406 6.911l5.443 5.347a.75.75 0 0 0 1.05 0l5.443-5.347c1.836-1.804 2.77-4.327 2.407-6.911z"/></svg>
+            </div>
+            <div class="hero-details">
+              <span class="hero-type">Playlist</span>
+              <h1 class="hero-title">Liked Songs</h1>
+              <div class="hero-meta">
+                <span class="user-pill-small">VIBEZ Member</span>
+                <span class="bullet">•</span>
+                <span id="likedHeroCount">4 songs</span>
+                <span class="bullet">•</span>
+                <span id="likedHeroDuration">14 min</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Playlist Action Bar -->
+          <div class="playlist-action-bar">
+            <button class="big-green-play-btn" id="playLikedBtn" title="Play Liked Songs">
+              <svg viewBox="0 0 24 24" width="28" height="28" fill="#000000"><path d="M7.05 3.606l13.49 7.788a.7.7 0 0 1 0 1.212L7.05 20.394A.7.7 0 0 1 6 19.788V4.212a.7.7 0 0 1 1.05-.606z"/></svg>
+            </button>
+            <button class="action-icon-btn" id="shuffleLikedBtn" title="Shuffle playlist">
+              <svg viewBox="0 0 16 16" width="24" height="24" fill="currentColor"><path d="M13.151.922a.75.75 0 1 0-1.06 1.06L13.109 3H11.16a3.75 3.75 0 0 0-2.873 1.34l-6.173 7.356A2.25 2.25 0 0 1 .39 12.5H0V14h.391a3.75 3.75 0 0 0 2.873-1.34l6.173-7.356a2.25 2.25 0 0 1 1.724-.804h1.947l-1.017 1.018a.75.75 0 0 0 1.06 1.06L15.98 3.75 13.15.922zM.391 3.5H0V2h.391c1.109 0 2.16.49 2.873 1.34L4.89 5.277l-.979 1.167-1.796-2.14A2.25 2.25 0 0 0 .39 3.5zM16 12.25l-2.849 2.828a.75.75 0 0 1-1.06-1.06L13.109 13H11.16a2.25 2.25 0 0 1-1.724-.804L7.81 10.237l.978-1.167 1.626 1.938A3.75 3.75 0 0 0 13.287 11.5h1.822l-1.018-1.018a.75.75 0 0 1 1.06-1.06L16 12.25z"/></svg>
+            </button>
+            <button class="action-icon-btn" id="downloadLikedBtn" title="Download all liked songs">
+              <svg viewBox="0 0 16 16" width="24" height="24" fill="currentColor"><path d="M4.995 8.745a.75.75 0 0 1 1.06 0L7.25 9.939V1.75a.75.75 0 0 1 1.5 0v8.189l1.195-1.194a.75.75 0 1 1 1.06 1.06L8 12.81 4.995 9.805a.75.75 0 0 1 0-1.06zM1.75 12.5a.75.75 0 0 1 .75.75v1.25h11V13.25a.75.75 0 0 1 1.5 0v2a.75.75 0 0 1-.75.75H2.5a.75.75 0 0 1-.75-.75v-2a.75.75 0 0 1 .75-.75z"/></svg>
+            </button>
+          </div>
+
+          <div class="track-table-container">
+            <div class="track-table-header">
+              <div class="col-num">#</div>
+              <div class="col-title">Title</div>
+              <div class="col-album">Album</div>
+              <div class="col-date">Date added</div>
+              <div class="col-duration">
+                <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M8 1.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm9-3.25V8H12v1.5H7.5V4.75H9z"/></svg>
+              </div>
+            </div>
+            <div class="track-rows" id="likedTrackRows"></div>
+          </div>
+        </div>
+
+        <!-- ================= PLAYLIST DETAIL VIEW ================= -->
+        <div class="view-section" id="playlistView">
+          <div class="playlist-hero" id="playlistHero">
+            <div class="hero-cover" id="playlistHeroCover"></div>
+            <div class="hero-details">
+              <span class="hero-type">Playlist</span>
+              <h1 class="hero-title" id="playlistHeroTitle">Playlist Title</h1>
+              <p class="hero-desc" id="playlistHeroDesc">Playlist description</p>
+              <div class="hero-meta">
+                <span class="user-pill-small">VIBEZ</span>
+                <span class="bullet">•</span>
+                <span id="playlistHeroCount">0 songs</span>
+                <span class="bullet">•</span>
+                <span id="playlistHeroDuration">0 min</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="playlist-action-bar">
+            <button class="big-green-play-btn" id="playPlaylistHeroBtn" title="Play">
+              <svg viewBox="0 0 24 24" width="28" height="28" fill="#000000"><path d="M7.05 3.606l13.49 7.788a.7.7 0 0 1 0 1.212L7.05 20.394A.7.7 0 0 1 6 19.788V4.212a.7.7 0 0 1 1.05-.606z"/></svg>
+            </button>
+            <button class="action-icon-btn" id="shufflePlaylistHeroBtn" title="Shuffle playlist">
+              <svg viewBox="0 0 16 16" width="24" height="24" fill="currentColor"><path d="M13.151.922a.75.75 0 1 0-1.06 1.06L13.109 3H11.16a3.75 3.75 0 0 0-2.873 1.34l-6.173 7.356A2.25 2.25 0 0 1 .39 12.5H0V14h.391a3.75 3.75 0 0 0 2.873-1.34l6.173-7.356a2.25 2.25 0 0 1 1.724-.804h1.947l-1.017 1.018a.75.75 0 0 0 1.06 1.06L15.98 3.75 13.15.922zM.391 3.5H0V2h.391c1.109 0 2.16.49 2.873 1.34L4.89 5.277l-.979 1.167-1.796-2.14A2.25 2.25 0 0 0 .39 3.5zM16 12.25l-2.849 2.828a.75.75 0 0 1-1.06-1.06L13.109 13H11.16a2.25 2.25 0 0 1-1.724-.804L7.81 10.237l.978-1.167 1.626 1.938A3.75 3.75 0 0 0 13.287 11.5h1.822l-1.018-1.018a.75.75 0 0 1 1.06-1.06L16 12.25z"/></svg>
+            </button>
+            <button class="action-icon-btn" id="likePlaylistBtn" title="Like playlist">
+              <svg viewBox="0 0 16 16" width="24" height="24" fill="currentColor"><path d="M1.69 2A4.582 4.582 0 0 1 8 2.023 4.583 4.583 0 0 1 11.88.75 4.6 4.6 0 0 1 16 5.347c0 3.238-2.923 6.08-7.53 10.203a.75.75 0 0 1-.94 0C2.923 11.427 0 8.585 0 5.347 0 3.233 1.488 1.488 3.69 1.25z"/></svg>
+            </button>
+          </div>
+
+          <div class="track-table-container">
+            <div class="track-table-header">
+              <div class="col-num">#</div>
+              <div class="col-title">Title</div>
+              <div class="col-album">Album</div>
+              <div class="col-date">Date added</div>
+              <div class="col-duration">
+                <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M8 1.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm9-3.25V8H12v1.5H7.5V4.75H9z"/></svg>
+              </div>
+            </div>
+            <div class="track-rows" id="playlistTrackRows"></div>
+          </div>
+        </div>
+
+        <!-- ================= FULLSCREEN LYRICS VIEW ================= -->
+        <div class="view-section lyrics-fullscreen-view" id="lyricsView">
+          <div class="lyrics-header-bar">
+            <div class="lyrics-track-info">
+              <span class="lyrics-song-title" id="lyricsSongTitle">Song Title</span>
+              <span class="lyrics-artist-name" id="lyricsArtistName">Artist Name</span>
+            </div>
+            <div class="lyrics-header-actions">
+              <button class="pill-btn lyrics-sync-badge" id="lyricsSyncBadge" title="Live Synced Lyrics">
+                <span class="pulse-dot"></span> Synced Karaoke
+              </button>
+              <button class="icon-btn-round" id="closeLyricsBtn" title="Close lyrics">
+                <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M2.47 2.47a.75.75 0 0 1 1.06 0L8 6.94l4.47-4.47a.75.75 0 1 1 1.06 1.06L9.06 8l4.47 4.47a.75.75 0 1 1-1.06 1.06L8 9.06l-4.47 4.47a.75.75 0 0 1-1.06-1.06L6.94 8 2.47 3.53a.75.75 0 0 1 0-1.06z"/></svg>
+              </button>
+            </div>
+          </div>
+          
+          <div class="lyrics-scroll-wrapper" id="lyricsScrollWrapper">
+            <div class="lyrics-container" id="lyricsContainer">
+              <!-- Live karaoke timed lyrics lines -->
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+
+    <!-- ================= RIGHT SIDEBAR (NOW PLAYING / QUEUE) ================= -->
+    <aside class="right-sidebar" id="rightSidebar">
+      <div class="right-sidebar-header">
+        <h3 class="panel-title" id="rightPanelTitle">Now Playing</h3>
+        <button class="icon-btn-micro" id="closeRightSidebarBtn" title="Close panel">
+          <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M2.47 2.47a.75.75 0 0 1 1.06 0L8 6.94l4.47-4.47a.75.75 0 1 1 1.06 1.06L9.06 8l4.47 4.47a.75.75 0 1 1-1.06 1.06L8 9.06l-4.47 4.47a.75.75 0 0 1-1.06-1.06L6.94 8 2.47 3.53a.75.75 0 0 1 0-1.06z"/></svg>
+        </button>
+      </div>
+
+      <div class="right-panel-content custom-scrollbar" id="rightPanelContent">
+        <div id="nowPlayingViewSubpanel">
+          <div class="panel-art-wrapper" id="panelArtWrapper" title="Click to enlarge">
+            <img src="" alt="Album Artwork" id="panelAlbumArt" class="panel-art-img">
+          </div>
+          <div class="panel-song-meta">
+            <div class="panel-title-row">
+              <div>
+                <h4 class="panel-track-title" id="panelTrackTitle">Track Title</h4>
+                <p class="panel-artist-name" id="panelArtistName">Artist Name</p>
+              </div>
+              <button class="like-btn" id="panelLikeBtn" title="Save to Liked Songs">
+                <svg viewBox="0 0 16 16" width="18" height="18" class="heart-icon"><path fill="currentColor" d="M1.69 2A4.582 4.582 0 0 1 8 2.023 4.583 4.583 0 0 1 11.88.75 4.6 4.6 0 0 1 16 5.347c0 3.238-2.923 6.08-7.53 10.203a.75.75 0 0 1-.94 0C2.923 11.427 0 8.585 0 5.347 0 3.233 1.488 1.488 3.69 1.25z"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="artist-bio-card" id="artistBioCard">
+            <div class="artist-card-cover" id="artistBioCover"></div>
+            <div class="artist-card-body">
+              <h4 class="artist-card-name" id="artistBioName">Artist</h4>
+              <p class="artist-monthly-listeners" id="artistBioListeners">14,295,120 monthly listeners</p>
+              <p class="artist-bio-text" id="artistBioText">Artist biography...</p>
+              <button class="follow-pill-btn" id="artistFollowBtn">Follow</button>
+            </div>
+          </div>
+
+          <div class="next-in-queue-card" id="nextQueueCard">
+            <div class="next-queue-header">
+              <span>Next in queue</span>
+              <button class="open-queue-link" id="openQueueLink">Open queue</button>
+            </div>
+            <div class="next-queue-item" id="nextQueueItem"></div>
+          </div>
+        </div>
+
+        <div id="queueViewSubpanel" style="display: none;">
+          <h4 class="queue-section-heading">Now playing</h4>
+          <div id="queueNowPlayingItem"></div>
+          
+          <div class="queue-heading-row" style="margin-top:20px;">
+            <h4 class="queue-section-heading">Next up</h4>
+            <button class="clear-queue-btn" id="clearQueueBtn">Clear</button>
+          </div>
+          <div class="queue-list" id="queueUpcomingList"></div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ================= ELEVATED NOW PLAYING BOTTOM DOCK ================= -->
+    <footer class="now-playing-bar" id="nowPlayingBar">
+      <!-- Left: Song Meta -->
+      <div class="now-playing-left">
+        <div class="mini-album-art-wrap" id="miniArtWrap" title="Click to enlarge artwork">
+          <img src="" alt="Now Playing Art" id="nowPlayingArt" class="mini-art">
+          <button class="expand-art-btn" id="expandArtBtn" title="Expand artwork">
+            <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M8.22 2.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.44 7.5H2.75a.75.75 0 0 1 0-1.5h8.69L8.22 3.28a.75.75 0 0 1 0-1.06z"/></svg>
+          </button>
+        </div>
+        <div class="now-playing-info">
+          <div class="now-playing-title-wrap">
+            <span class="now-playing-title" id="nowPlayingTitle">Select a track</span>
+          </div>
+          <span class="now-playing-artist" id="nowPlayingArtist">VIBEZ Player</span>
+        </div>
+        <button class="player-icon-btn heart-btn" id="playerLikeBtn" title="Save to Your Library">
+          <svg viewBox="0 0 16 16" width="16" height="16" class="heart-icon"><path fill="currentColor" d="M1.69 2A4.582 4.582 0 0 1 8 2.023 4.583 4.583 0 0 1 11.88.75 4.6 4.6 0 0 1 16 5.347c0 3.238-2.923 6.08-7.53 10.203a.75.75 0 0 1-.94 0C2.923 11.427 0 8.585 0 5.347 0 3.233 1.488 1.488 3.69 1.25z"/></svg>
+        </button>
+      </div>
+
+      <!-- Center: Controls & Timeline Scrubber -->
+      <div class="now-playing-center">
+        <div class="player-controls">
+          <button class="control-btn" id="shuffleBtn" title="Enable shuffle (S)">
+            <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M13.151.922a.75.75 0 1 0-1.06 1.06L13.109 3H11.16a3.75 3.75 0 0 0-2.873 1.34l-6.173 7.356A2.25 2.25 0 0 1 .39 12.5H0V14h.391a3.75 3.75 0 0 0 2.873-1.34l6.173-7.356a2.25 2.25 0 0 1 1.724-.804h1.947l-1.017 1.018a.75.75 0 0 0 1.06 1.06L15.98 3.75 13.15.922zM.391 3.5H0V2h.391c1.109 0 2.16.49 2.873 1.34L4.89 5.277l-.979 1.167-1.796-2.14A2.25 2.25 0 0 0 .39 3.5zM16 12.25l-2.849 2.828a.75.75 0 0 1-1.06-1.06L13.109 13H11.16a2.25 2.25 0 0 1-1.724-.804L7.81 10.237l.978-1.167 1.626 1.938A3.75 3.75 0 0 0 13.287 11.5h1.822l-1.018-1.018a.75.75 0 0 1 1.06-1.06L16 12.25z"/></svg>
+          </button>
+          <button class="control-btn" id="prevBtn" title="Previous (Shift + Left)">
+            <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M3.3 1a.7.7 0 0 1 .7.7v5.15l9.95-5.744a.7.7 0 0 1 1.05.606v12.576a.7.7 0 0 1-1.05.607L4 9.149V14.3a.7.7 0 0 1-.7.7H1.7a.7.7 0 0 1-.7-.7V1.7a.7.7 0 0 1 .7-.7h1.6z"/></svg>
+          </button>
+          <button class="play-pause-circle-btn" id="playPauseBtn" title="Play (Space)">
+            <svg viewBox="0 0 16 16" width="20" height="20" fill="#000000" id="playPauseIcon"><path d="M3 1.713a.7.7 0 0 1 1.05-.607l10.89 6.288a.7.7 0 0 1 0 1.212L4.05 14.894A.7.7 0 0 1 3 14.288V1.713z"/></svg>
+          </button>
+          <button class="control-btn" id="nextBtn" title="Next (Shift + Right)">
+            <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M12.7 1a.7.7 0 0 0-.7.7v5.15L2.05 1.107A.7.7 0 0 0 1 1.712v12.576a.7.7 0 0 0 1.05.607L12 9.149V14.3a.7.7 0 0 0 .7.7h1.6a.7.7 0 0 0 .7-.7V1.7a.7.7 0 0 0-.7-.7h-1.6z"/></svg>
+          </button>
+          <button class="control-btn" id="repeatBtn" title="Enable repeat (R)">
+            <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M0 4.75A3.75 3.75 0 0 1 3.75 1h8.5A3.75 3.75 0 0 1 16 4.75v5a3.75 3.75 0 0 1-3.75 3.75H9.81l1.018 1.018a.75.75 0 1 1-1.06 1.06L6.939 12.75l2.829-2.828a.75.75 0 1 1 1.06 1.06L9.811 12h2.439a2.25 2.25 0 0 0 2.25-2.25v-5a2.25 2.25 0 0 0-2.25-2.25h-8.5A2.25 2.25 0 0 0 1.5 4.75v5A2.25 2.25 0 0 0 3.75 12H5v1.5H3.75A3.75 3.75 0 0 1 0 9.75v-5z"/></svg>
+          </button>
+        </div>
+
+        <div class="playback-timeline">
+          <span class="time-label" id="currentTime">0:00</span>
+          <div class="progress-bar-container" id="progressBarContainer">
+            <div class="progress-bar-track">
+              <div class="progress-bar-fill" id="progressBarFill" style="width: 0%;"></div>
+              <div class="progress-thumb" id="progressThumb" style="left: 0%;"></div>
+            </div>
+          </div>
+          <span class="time-label" id="totalDuration">0:00</span>
+        </div>
+      </div>
+
+      <!-- Right: Secondary Controls -->
+      <div class="now-playing-right">
+        <button class="player-icon-btn" id="nowPlayingViewBtn" title="Now playing view">
+          <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M11.196 8 6 5.24v5.52L11.196 8z"/><path d="M15.002 1.75A1.75 1.75 0 0 0 13.252 0h-10.5a1.75 1.75 0 0 0-1.75 1.75v12.5c0 .966.783 1.75 1.75 1.75h10.5a1.75 1.75 0 0 0 1.75-1.75V1.75zm-1.75-.25a.25.25 0 0 1 .25.25v12.5a.25.25 0 0 1-.25.25h-10.5a.25.25 0 0 1-.25-.25V1.75a.25.25 0 0 1 .25-.25h10.5z"/></svg>
+        </button>
+        <button class="player-icon-btn" id="lyricsBtn" title="Karaoke Lyrics (T)">
+          <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M13.426 2.574a2.831 2.831 0 0 0-4.797 1.55l3.247 3.247a2.831 2.831 0 0 0 1.55-4.797zM10.5 8.75 7.253 5.5l-5.78 5.78a2.828 2.828 0 0 0-.828 2L.64 15.355a.75.75 0 0 0 .848.848l2.075-.005a2.832 2.832 0 0 0 2-1.077L10.5 8.75z"/></svg>
+        </button>
+        <button class="player-icon-btn" id="queueBtn" title="Queue">
+          <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M15 15H1v-1.5h14V15zm0-4.5H1V9h14v1.5zm-14-7A2.5 2.5 0 0 1 3.5 1h9a2.5 2.5 0 0 1 2.5 2.5v.75H1V3.5zM3.5 2.5a1 1 0 0 0-1 1V4h11v-.5a1 1 0 0 0-1-1h-9z"/></svg>
+        </button>
+        <button class="player-icon-btn" id="deviceBtn" title="Connect to a device">
+          <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M6 2.75C6 1.784 6.784 1 7.75 1h6.5c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0 1 14.25 15h-6.5A1.75 1.75 0 0 1 6 13.25V2.75zm1.75-.25a.25.25 0 0 0-.25.25v10.5c0 .138.112.25.25.25h6.5a.25.25 0 0 0 .25-.25V2.75a.25.25 0 0 0-.25-.25h-6.5zm-6 4.5A1.75 1.75 0 0 1 3.5 5.25h1.25V6.75H3.5a.25.25 0 0 0-.25.25v6.5c0 .138.112.25.25.25h1.25v1.5H3.5A1.75 1.75 0 0 1 1.75 13.5v-6.5z"/></svg>
+        </button>
+
+        <!-- Volume Control -->
+        <div class="volume-bar-wrapper">
+          <button class="player-icon-btn" id="volumeBtn" title="Mute/Unmute (M)">
+            <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor" id="volumeIcon"><path d="M9.741.85a.75.75 0 0 1 .375.65v13a.75.75 0 0 1-1.125.65l-6.925-4H.75A.75.75 0 0 1 0 10.4V5.6a.75.75 0 0 1 .75-.75h1.316l6.925-4a.75.75 0 0 1 .75 0zm-1.116 2.11L3.25 6.084H1.5v3.832h1.75l5.375 3.104V2.96zM11.5 5.56a.75.75 0 0 1 1.06 0 3.5 3.5 0 0 1 0 4.88.75.75 0 0 1-1.06-1.06 2 2 0 0 0 0-2.76.75.75 0 0 1 0-1.06zm2.12-2.12a.75.75 0 0 1 1.06 0 6.5 6.5 0 0 1 0 9.12.75.75 0 1 1-1.06-1.06 5 5 0 0 0 0-7 .75.75 0 0 1 0-1.06z"/></svg>
+          </button>
+          <div class="volume-slider-container" id="volumeSliderContainer">
+            <div class="volume-slider-track">
+              <div class="volume-slider-fill" id="volumeSliderFill" style="width: 80%;"></div>
+              <div class="volume-thumb" id="volumeThumb" style="left: 80%;"></div>
+            </div>
+          </div>
+        </div>
+
+        <button class="player-icon-btn" id="fullscreenBtn" title="Full screen">
+          <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M6.53 9.47a.75.75 0 0 1 0 1.06l-2.72 2.72h1.94a.75.75 0 0 1 0 1.5H2a.75.75 0 0 1-.75-.75v-3.75a.75.75 0 0 1 1.5 0v1.94l2.72-2.72a.75.75 0 0 1 1.06 0zm2.94 0a.75.75 0 0 1 1.06 0l2.72 2.72v-1.94a.75.75 0 0 1 1.5 0v3.75a.75.75 0 0 1-.75.75h-3.75a.75.75 0 0 1 0-1.5h1.94l-2.72-2.72a.75.75 0 0 1 0-1.06zM2 2.75A.75.75 0 0 1 2.75 2h3.75a.75.75 0 0 1 0 1.5H4.56l2.72 2.72a.75.75 0 0 1-1.06 1.06L3.5 4.56v1.94a.75.75 0 0 1-1.5 0V2.75zm11.25 0a.75.75 0 0 1 .75.75v3.75a.75.75 0 0 1-1.5 0V4.56l-2.72 2.72a.75.75 0 1 1-1.06-1.06L11.44 3.5H9.5a.75.75 0 0 1 0-1.5h3.75z"/></svg>
+        </button>
+      </div>
+    </footer>
+
+    <!-- REAL HTML5 AUDIO ELEMENT -->
+    <audio id="audioPlayer" preload="auto"></audio>
+
+    <!-- FLOATING CONTEXT MENU -->
+    <div class="context-menu" id="trackContextMenu" style="display: none;">
+      <button class="context-menu-item" id="ctxPlay"><svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M3 1.713a.7.7 0 0 1 1.05-.607l10.89 6.288a.7.7 0 0 1 0 1.212L4.05 14.894A.7.7 0 0 1 3 14.288V1.713z"/></svg> Play song</button>
+      <button class="context-menu-item" id="ctxAddToQueue"><svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M15 15H1v-1.5h14V15zm0-4.5H1V9h14v1.5zm-14-7A2.5 2.5 0 0 1 3.5 1h9a2.5 2.5 0 0 1 2.5 2.5v.75H1V3.5z"/></svg> Add to queue</button>
+      <button class="context-menu-item" id="ctxToggleLike"><svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M1.69 2A4.582 4.582 0 0 1 8 2.023 4.583 4.583 0 0 1 11.88.75 4.6 4.6 0 0 1 16 5.347c0 3.238-2.923 6.08-7.53 10.203a.75.75 0 0 1-.94 0C2.923 11.427 0 8.585 0 5.347 0 3.233 1.488 1.488 3.69 1.25z"/></svg> <span id="ctxLikeLabel">Save to Liked Songs</span></button>
+      <button class="context-menu-item" id="ctxViewLyrics"><svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M13.426 2.574a2.831 2.831 0 0 0-4.797 1.55l3.247 3.247a2.831 2.831 0 0 0 1.55-4.797zM10.5 8.75 7.253 5.5l-5.78 5.78a2.828 2.828 0 0 0-.828 2L.64 15.355a.75.75 0 0 0 .848.848l2.075-.005a2.832 2.832 0 0 0 2-1.077L10.5 8.75z"/></svg> View Karaoke Lyrics</button>
+      <button class="context-menu-item" id="ctxGoToArtist"><svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0-2.21-2.686-4-6-4s-6 1.79-6 4v1h12v-1z"/></svg> Go to artist</button>
+      <div class="dropdown-divider"></div>
+      <button class="context-menu-item" id="ctxDownload"><svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M4.995 8.745a.75.75 0 0 1 1.06 0L7.25 9.939V1.75a.75.75 0 0 1 1.5 0v8.189l1.195-1.194a.75.75 0 1 1 1.06 1.06L8 12.81 4.995 9.805a.75.75 0 0 1 0-1.06zM1.75 12.5a.75.75 0 0 1 .75.75v1.25h11V13.25a.75.75 0 0 1 1.5 0v2a.75.75 0 0 1-.75.75H2.5a.75.75 0 0 1-.75-.75v-2a.75.75 0 0 1 .75-.75z"/></svg> Download song (MP3)</button>
+      <button class="context-menu-item" id="ctxCopyLink"><svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M6.22 8.72a.75.75 0 0 0 1.06 1.06l5.25-5.25a3.25 3.25 0 0 0-4.6-4.6L5.68 2.18a3.25 3.25 0 0 0 4.6 4.6l.53-.53a.75.75 0 0 0-1.06-1.06l-.53.53a1.75 1.75 0 0 1-2.48-2.48l2.25-2.25a1.75 1.75 0 0 1 2.48 2.48L6.22 8.72z"/></svg> Copy song link</button>
+    </div>
+
+    <!-- CREATE PLAYLIST MODAL -->
+    <div class="modal-overlay" id="createPlaylistModal" style="display: none;">
+      <div class="modal-box">
+        <div class="modal-header">
+          <h3>Create new playlist on VIBEZ</h3>
+          <button class="modal-close-btn" id="closeCreatePlaylistModal">✕</button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="newPlaylistName">Playlist name</label>
+            <input type="text" id="newPlaylistName" class="form-input" placeholder="My Playlist" value="My Awesome Mix">
+          </div>
+          <div class="form-group">
+            <label for="newPlaylistDesc">Description (optional)</label>
+            <textarea id="newPlaylistDesc" class="form-textarea" placeholder="Give your playlist a catchy description"></textarea>
+          </div>
+          <div class="modal-actions">
+            <button class="pill-btn cancel-btn" id="cancelCreatePlaylist">Cancel</button>
+            <button class="pill-btn premium-btn" id="saveCreatePlaylist">Create</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- EXPLORE PREMIUM MODAL -->
+    <div class="modal-overlay" id="premiumModal" style="display: none;">
+      <div class="modal-box premium-modal-box">
+        <div class="modal-header">
+          <div>
+            <h3>Get 3 months of VIBEZ Premium for free</h3>
+            <p style="color:var(--text-subdued);font-size:13px;margin-top:4px;">Enjoy ad-free music, offline listening, and unlimited skips.</p>
+          </div>
+          <button class="modal-close-btn" id="closePremiumModal">✕</button>
+        </div>
+        <div class="modal-body premium-plans-grid">
+          <div class="plan-card featured">
+            <span class="plan-badge">Most popular</span>
+            <h4>Individual</h4>
+            <div class="plan-price">$10.99 / month</div>
+            <ul class="plan-features">
+              <li>✓ 1 Premium account</li>
+              <li>✓ Listen to 21 master hits ad-free</li>
+              <li>✓ Download to listen offline</li>
+              <li>✓ High quality audio</li>
+            </ul>
+            <button class="pill-btn premium-btn plan-btn" data-plan="Individual">Get Individual</button>
+          </div>
+          <div class="plan-card">
+            <h4>Duo</h4>
+            <div class="plan-price">$14.99 / month</div>
+            <ul class="plan-features">
+              <li>✓ 2 Premium accounts</li>
+              <li>✓ Duo Mix shared playlist</li>
+              <li>✓ High quality audio</li>
+            </ul>
+            <button class="pill-btn premium-btn plan-btn" data-plan="Duo">Get Duo</button>
+          </div>
+          <div class="plan-card">
+            <h4>Family</h4>
+            <div class="plan-price">$16.99 / month</div>
+            <ul class="plan-features">
+              <li>✓ Up to 6 Premium accounts</li>
+              <li>✓ VIBEZ Kids access</li>
+              <li>✓ Explicit music blocking</li>
+            </ul>
+            <button class="pill-btn premium-btn plan-btn" data-plan="Family">Get Family</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- INSTALL APP MODAL -->
+    <div class="modal-overlay" id="installModal" style="display: none;">
+      <div class="modal-box">
+        <div class="modal-header">
+          <h3>Get the full experience with VIBEZ Desktop</h3>
+          <button class="modal-close-btn" id="closeInstallModal">✕</button>
+        </div>
+        <div class="modal-body install-body">
+          <div class="install-icon-banner">
+            <svg viewBox="0 0 32 32" width="64" height="64" fill="none">
+              <rect width="32" height="32" rx="8" fill="#1e1e1e"/>
+              <path d="M5 8L11 23L16 11L18 16L20 9L27 8" stroke="#1ed760" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="11" cy="23" r="2" fill="#1ed760"/>
+            </svg>
+          </div>
+          <h4>Seamless listening across your Windows PC and mobile devices</h4>
+          <p style="color:var(--text-subdued);margin:12px 0 24px;">Enjoy hardware media hotkeys, mini player, offline mode, and high-fidelity streaming on VIBEZ.</p>
+          <button class="pill-btn premium-btn" id="startDownloadAppBtn" style="padding:12px 28px;font-size:15px;">Download Free VIBEZ App</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONNECT TO A DEVICE MODAL -->
+    <div class="modal-overlay" id="devicesModal" style="display: none;">
+      <div class="modal-box">
+        <div class="modal-header">
+          <h3>Connect to a device</h3>
+          <button class="modal-close-btn" id="closeDevicesModal">✕</button>
+        </div>
+        <div class="modal-body">
+          <div class="device-item active" data-device="Web Browser">
+            <svg viewBox="0 0 16 16" width="24" height="24" fill="#1ed760"><path d="M6 2.75C6 1.784 6.784 1 7.75 1h6.5c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0 1 14.25 15h-6.5A1.75 1.75 0 0 1 6 13.25V2.75z"/></svg>
+            <div class="device-info">
+              <h4>Current Device (Web Player)</h4>
+              <span>VIBEZ Web Player • Listening Now</span>
+            </div>
+          </div>
+          <div class="device-item" data-device="iPhone 15 Pro">
+            <svg viewBox="0 0 16 16" width="24" height="24" fill="currentColor"><path d="M4 1.5A1.5 1.5 0 0 1 5.5 0h5A1.5 1.5 0 0 1 12 1.5v13a1.5 1.5 0 0 1-1.5 1.5h-5A1.5 1.5 0 0 1 4 14.5v-13zM5.5 1a.5.5 0 0 0-.5.5V13h6V1.5a.5.5 0 0 0-.5-.5h-5z"/></svg>
+            <div class="device-info">
+              <h4>iPhone 15 Pro</h4>
+              <span>VIBEZ Connect • Ready</span>
+            </div>
+          </div>
+          <div class="device-item" data-device="Living Room Speaker">
+            <svg viewBox="0 0 16 16" width="24" height="24" fill="currentColor"><path d="M9.741.85a.75.75 0 0 1 .375.65v13a.75.75 0 0 1-1.125.65l-6.925-4H.75A.75.75 0 0 1 0 10.4V5.6a.75.75 0 0 1 .75-.75h1.316l6.925-4a.75.75 0 0 1 .75 0z"/></svg>
+            <div class="device-info">
+              <h4>Living Room Studio Speaker</h4>
+              <span>AirPlay / Cast • Ready</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ARTWORK ENLARGE MODAL -->
+    <div class="modal-overlay" id="artZoomModal" style="display: none;">
+      <div class="art-zoom-box">
+        <button class="modal-close-btn art-zoom-close" id="closeArtZoomModal">✕</button>
+        <img src="" alt="Album Artwork Large" id="artZoomImg">
+        <div class="art-zoom-meta">
+          <h3 id="artZoomTitle">Title</h3>
+          <p id="artZoomArtist">Artist</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- USER PROFILE MODAL -->
+    <div class="modal-overlay" id="profileModal" style="display: none;">
+      <div class="modal-box">
+        <div class="modal-header">
+          <h3>VIBEZ Profile</h3>
+          <button class="modal-close-btn" id="closeProfileModal">✕</button>
+        </div>
+        <div class="modal-body profile-modal-body">
+          <div class="profile-avatar-large">VZ</div>
+          <div class="profile-meta-details">
+            <span class="tag-badge">VIBEZ Member</span>
+            <h3>Music Lover</h3>
+            <p>Member since 2024 • 21 Master Hits Library</p>
+            <div class="profile-stats">
+              <div><strong id="statLikedCount">4</strong> <span>Liked Songs</span></div>
+              <div><strong id="statPlaylistsCount">5</strong> <span>Playlists</span></div>
+              <div><strong>21</strong> <span>Tracks Available</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- KEYBOARD SHORTCUTS MODAL -->
+    <div class="modal-overlay" id="shortcutsModal" style="display: none;">
+      <div class="modal-box">
+        <div class="modal-header">
+          <h3>Keyboard shortcuts</h3>
+          <button class="modal-close-btn" id="closeShortcutsModal">✕</button>
+        </div>
+        <div class="modal-body shortcuts-grid">
+          <div class="shortcut-row"><span>Play / Pause</span><kbd>Space</kbd></div>
+          <div class="shortcut-row"><span>Next track</span><kbd>Shift</kbd> + <kbd>→</kbd> / <kbd>N</kbd></div>
+          <div class="shortcut-row"><span>Previous track</span><kbd>Shift</kbd> + <kbd>←</kbd> / <kbd>P</kbd></div>
+          <div class="shortcut-row"><span>Seek forward 5s</span><kbd>→</kbd></div>
+          <div class="shortcut-row"><span>Seek backward 5s</span><kbd>←</kbd></div>
+          <div class="shortcut-row"><span>Volume up (+5%)</span><kbd>↑</kbd></div>
+          <div class="shortcut-row"><span>Volume down (-5%)</span><kbd>↓</kbd></div>
+          <div class="shortcut-row"><span>Mute / Unmute</span><kbd>M</kbd></div>
+          <div class="shortcut-row"><span>Save to Liked Songs</span><kbd>L</kbd></div>
+          <div class="shortcut-row"><span>Toggle Shuffle</span><kbd>S</kbd></div>
+          <div class="shortcut-row"><span>Toggle Repeat</span><kbd>R</kbd></div>
+          <div class="shortcut-row"><span>Toggle Karaoke Lyrics</span><kbd>T</kbd></div>
+          <div class="shortcut-row"><span>Toggle Queue Panel</span><kbd>Q</kbd></div>
+          <div class="shortcut-row"><span>Toggle Fullscreen</span><kbd>F</kbd></div>
+          <div class="shortcut-row"><span>Focus Search Bar</span><kbd>/</kbd></div>
+          <div class="shortcut-row"><span>Close Dialogs / Escape</span><kbd>Esc</kbd></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION CONTAINER -->
+    <div class="toast-container" id="toastContainer"></div>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
