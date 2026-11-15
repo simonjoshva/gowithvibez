@@ -1160,6 +1160,10 @@ const state = {
   currentIndex: 0,
   userPlaylists: [],
   upcomingQueue: [],
+  recentlyPlayed: [21, 18, 5, 8, 1, 3],
+  savedAlbums: new Set(["Harlequin", "I Love You.", "Summer Girl", "Nightflight to Venus"]),
+  followedArtists: new Set(["Lady Gaga", "Bruno Mars", "The Neighbourhood", "AURORA", "Dua Lipa"]),
+  currentPlan: "Free",
   isPlaying: false,
   isShuffle: false,
   repeatMode: 0, // 0 = off, 1 = repeat one song, 2 = repeat all
@@ -1174,7 +1178,7 @@ const state = {
   rightSidebarSubpanel: "now-playing",
   activeLyricIndex: -1,
   homeFilter: "all", // "all", "music", "podcasts"
-  libraryFilter: "all", // "all", "playlists", "artists", "albums"
+  libraryFilter: "all", // "all", "playlists", "recents", "artists", "albums"
   librarySort: "recents",
   contextMenuTrackId: null,
   isArtistFollowed: false,
@@ -1199,6 +1203,7 @@ const elements = {
   likedView: document.getElementById("likedView"),
   playlistView: document.getElementById("playlistView"),
   lyricsView: document.getElementById("lyricsView"),
+  premiumView: document.getElementById("premiumView"),
 
   // Primary & Mobile Navigation
   brandLogo: document.getElementById("brandLogo"),
@@ -1206,11 +1211,12 @@ const elements = {
   navHomeBtn: document.getElementById("navHomeBtn"),
   navSearchBtn: document.getElementById("navSearchBtn"),
   navLibraryBtn: document.getElementById("navLibraryBtn"),
+  navPremiumBtn: document.getElementById("navPremiumBtn"),
   mobileBottomNav: document.getElementById("mobileBottomNav"),
   mobileNavHome: document.getElementById("mobileNavHome"),
   mobileNavSearch: document.getElementById("mobileNavSearch"),
   mobileNavLibrary: document.getElementById("mobileNavLibrary"),
-  mobileNavProfile: document.getElementById("mobileNavProfile"),
+  mobileNavPremium: document.getElementById("mobileNavPremium"),
   topbarHomeBtn: document.getElementById("topbarHomeBtn"),
   historyBackBtn: document.getElementById("historyBackBtn"),
   historyForwardBtn: document.getElementById("historyForwardBtn"),
@@ -1222,6 +1228,7 @@ const elements = {
   libLikedCount: document.getElementById("libLikedCount"),
   customPlaylistsList: document.getElementById("customPlaylistsList"),
   chipLibPlaylists: document.getElementById("chipLibPlaylists"),
+  chipLibRecents: document.getElementById("chipLibRecents"),
   chipLibArtists: document.getElementById("chipLibArtists"),
   chipLibAlbums: document.getElementById("chipLibAlbums"),
   libSearchToggle: document.getElementById("libSearchToggle"),
@@ -1235,6 +1242,7 @@ const elements = {
   libViewCreatePlaylistBtn: document.getElementById("libViewCreatePlaylistBtn"),
   libViewChipAll: document.getElementById("libViewChipAll"),
   libViewChipPlaylists: document.getElementById("libViewChipPlaylists"),
+  libViewChipRecents: document.getElementById("libViewChipRecents"),
   libViewChipArtists: document.getElementById("libViewChipArtists"),
   libViewChipAlbums: document.getElementById("libViewChipAlbums"),
   libViewSearchToggle: document.getElementById("libViewSearchToggle"),
@@ -1258,6 +1266,8 @@ const elements = {
   searchArtistsRow: document.getElementById("searchArtistsRow"),
   searchAlbumsShelf: document.getElementById("searchAlbumsShelf"),
   searchAlbumsRow: document.getElementById("searchAlbumsRow"),
+  searchPlaylistsShelf: document.getElementById("searchPlaylistsShelf"),
+  searchPlaylistsRow: document.getElementById("searchPlaylistsRow"),
   browseGrid: document.getElementById("browseGrid"),
   searchResultsFound: document.getElementById("searchResultsFound"),
   searchNoResults: document.getElementById("searchNoResults"),
@@ -1267,24 +1277,47 @@ const elements = {
   homeMusicSubcontainer: document.getElementById("homeMusicSubcontainer"),
   homePodcastsSubcontainer: document.getElementById("homePodcastsSubcontainer"),
   podcastsCardsRow: document.getElementById("podcastsCardsRow"),
+  homeHeroBanner: document.getElementById("homeHeroBanner"),
+  heroBannerPlayBtn: document.getElementById("heroBannerPlayBtn"),
+  heroBannerLikeBtn: document.getElementById("heroBannerLikeBtn"),
+  heroBannerLikeText: document.getElementById("heroBannerLikeText"),
+  heroBannerMoreBtn: document.getElementById("heroBannerMoreBtn"),
+  heroBannerImg: document.getElementById("heroBannerImg"),
+  heroBannerTitle: document.getElementById("heroBannerTitle"),
+  heroBannerArtist: document.getElementById("heroBannerArtist"),
+  heroBannerDesc: document.getElementById("heroBannerDesc"),
   quickGrid: document.getElementById("quickGrid"),
+  recentlyPlayedShelf: document.getElementById("recentlyPlayedShelf"),
+  recentlyPlayedRow: document.getElementById("recentlyPlayedRow"),
   madeForYouRow: document.getElementById("madeForYouRow"),
+  popularSongsShelf: document.getElementById("popularSongsShelf"),
+  popularSongsRow: document.getElementById("popularSongsRow"),
   popularAlbumsRow: document.getElementById("popularAlbumsRow"),
   todaysHitsRow: document.getElementById("todaysHitsRow"),
   recommendedRow: document.getElementById("recommendedRow"),
   homePlaylistsRow: document.getElementById("homePlaylistsRow"),
   artistsRow: document.getElementById("artistsRow"),
+  newReleasesShelf: document.getElementById("newReleasesShelf"),
+  newReleasesRow: document.getElementById("newReleasesRow"),
+  favoriteSongsShelf: document.getElementById("favoriteSongsShelf"),
+  favoriteSongsRow: document.getElementById("favoriteSongsRow"),
   homeTrackRows: document.getElementById("homeTrackRows"),
   playAllHomeBtn: document.getElementById("playAllHomeBtn"),
   homeChipAll: document.getElementById("homeChipAll"),
   homeChipMusic: document.getElementById("homeChipMusic"),
   homeChipPodcasts: document.getElementById("homeChipPodcasts"),
+  showAllRecentlyPlayed: document.getElementById("showAllRecentlyPlayed"),
   showAllMadeForYou: document.getElementById("showAllMadeForYou"),
+  showAllPopularSongs: document.getElementById("showAllPopularSongs"),
   showAllAlbums: document.getElementById("showAllAlbums"),
   showAllHits: document.getElementById("showAllHits"),
   showAllRecommended: document.getElementById("showAllRecommended"),
   showAllPlaylists: document.getElementById("showAllPlaylists"),
   showAllArtists: document.getElementById("showAllArtists"),
+  showAllNewReleases: document.getElementById("showAllNewReleases"),
+  showAllFavorites: document.getElementById("showAllFavorites"),
+  claimPremiumHeroBtn: document.getElementById("claimPremiumHeroBtn"),
+  viewAllPlansBtn: document.getElementById("viewAllPlansBtn"),
 
   // Liked Songs Elements
   likedTrackRows: document.getElementById("likedTrackRows"),
@@ -1403,18 +1436,25 @@ const elements = {
   queueUpcomingList: document.getElementById("queueUpcomingList"),
   clearQueueBtn: document.getElementById("clearQueueBtn"),
 
-  // Modals
+  // Modals & Context Menu
+  contextMenuBackdrop: document.getElementById("contextMenuBackdrop"),
   trackContextMenu: document.getElementById("trackContextMenu"),
+  ctxMenuHeader: document.getElementById("ctxMenuHeader"),
+  ctxTrackThumb: document.getElementById("ctxTrackThumb"),
+  ctxTrackTitle: document.getElementById("ctxTrackTitle"),
+  ctxTrackArtist: document.getElementById("ctxTrackArtist"),
   ctxPlay: document.getElementById("ctxPlay"),
+  ctxPlayNext: document.getElementById("ctxPlayNext"),
   ctxAddToQueue: document.getElementById("ctxAddToQueue"),
   ctxAddToPlaylist: document.getElementById("ctxAddToPlaylist"),
   ctxRemoveFromPlaylist: document.getElementById("ctxRemoveFromPlaylist"),
   ctxToggleLike: document.getElementById("ctxToggleLike"),
   ctxLikeLabel: document.getElementById("ctxLikeLabel"),
-  ctxViewLyrics: document.getElementById("ctxViewLyrics"),
   ctxGoToArtist: document.getElementById("ctxGoToArtist"),
-  ctxDownload: document.getElementById("ctxDownload"),
+  ctxViewLyrics: document.getElementById("ctxViewLyrics"),
+  ctxShareSong: document.getElementById("ctxShareSong"),
   ctxCopyLink: document.getElementById("ctxCopyLink"),
+  ctxDownload: document.getElementById("ctxDownload"),
 
   createPlaylistModal: document.getElementById("createPlaylistModal"),
   newPlaylistTitleInput: document.getElementById("newPlaylistName"),
@@ -1433,6 +1473,7 @@ const elements = {
   addToPlaylistModal: document.getElementById("addToPlaylistModal"),
   addToPlaylistSongInfo: document.getElementById("addToPlaylistSongInfo"),
   playlistPickList: document.getElementById("playlistPickList"),
+  modalCreateNewPlaylistBtn: document.getElementById("modalCreateNewPlaylistBtn"),
   closeAddToPlaylistModal: document.getElementById("closeAddToPlaylistModal"),
 
   premiumModal: document.getElementById("premiumModal"),
@@ -1481,6 +1522,22 @@ function loadFromStorage() {
     if (savedPlaylists) {
       state.userPlaylists = JSON.parse(savedPlaylists);
     }
+    const savedRecents = localStorage.getItem("vibez_recently_played");
+    if (savedRecents) {
+      state.recentlyPlayed = JSON.parse(savedRecents);
+    }
+    const savedAlbums = localStorage.getItem("vibez_saved_albums");
+    if (savedAlbums) {
+      state.savedAlbums = new Set(JSON.parse(savedAlbums));
+    }
+    const savedFollowed = localStorage.getItem("vibez_followed_artists");
+    if (savedFollowed) {
+      state.followedArtists = new Set(JSON.parse(savedFollowed));
+    }
+    const savedPlan = localStorage.getItem("vibez_user_plan");
+    if (savedPlan) {
+      state.currentPlan = savedPlan;
+    }
   } catch (e) {
     console.warn("Storage load warning:", e);
   }
@@ -1490,6 +1547,10 @@ function saveToStorage() {
   try {
     localStorage.setItem("vibez_liked_songs", JSON.stringify([...state.likedSongIds]));
     localStorage.setItem("vibez_user_playlists", JSON.stringify(state.userPlaylists));
+    localStorage.setItem("vibez_recently_played", JSON.stringify(state.recentlyPlayed));
+    localStorage.setItem("vibez_saved_albums", JSON.stringify([...state.savedAlbums]));
+    localStorage.setItem("vibez_followed_artists", JSON.stringify([...state.followedArtists]));
+    localStorage.setItem("vibez_user_plan", state.currentPlan);
   } catch (e) {
     console.warn("Storage save warning:", e);
   }
@@ -1504,6 +1565,14 @@ function setTrack(song, autoPlay = true) {
   state.currentTrack = song;
   state.currentIndex = state.currentPlaylist.findIndex(t => t.id === song.id);
   if (state.currentIndex === -1) state.currentIndex = 0;
+
+  // Record to Recently Played
+  if (!state.recentlyPlayed) state.recentlyPlayed = [];
+  state.recentlyPlayed = [song.id, ...state.recentlyPlayed.filter(id => id !== song.id)].slice(0, 20);
+  saveToStorage();
+  if (state.activeView === "home" && typeof renderRecentlyPlayedRow === "function") {
+    renderRecentlyPlayedRow();
+  }
 
   // Set Cloudinary Audio Source
   elements.audio.src = song.src;
@@ -1919,6 +1988,19 @@ function toggleLikeTrack(songId) {
   if (state.activeView === "library") {
     renderLibraryView();
   }
+  if (state.activeView === "home") {
+    if (typeof renderFavoriteSongsRow === "function") renderFavoriteSongsRow();
+    if (elements.heroBannerLikeBtn) {
+      const featId = TRACKS_DATA[20] ? TRACKS_DATA[20].id : null;
+      if (featId) {
+        const isFeatLiked = state.likedSongIds.has(featId);
+        elements.heroBannerLikeBtn.classList.toggle("liked", isFeatLiked);
+        if (elements.heroBannerLikeText) {
+          elements.heroBannerLikeText.textContent = isFeatLiked ? "Saved to Library" : "Save to Library";
+        }
+      }
+    }
+  }
 }
 
 function updateLikeButtonsState() {
@@ -2060,12 +2142,14 @@ function navigateTo(viewName, param = null) {
   if (elements.navHomeBtn) elements.navHomeBtn.classList.toggle("active", viewName === "home");
   if (elements.navSearchBtn) elements.navSearchBtn.classList.toggle("active", viewName === "search");
   if (elements.navLibraryBtn) elements.navLibraryBtn.classList.toggle("active", viewName === "library");
+  if (elements.navPremiumBtn) elements.navPremiumBtn.classList.toggle("active", viewName === "premium");
   if (elements.libLikedSongs) elements.libLikedSongs.classList.toggle("active", viewName === "liked");
   if (elements.lyricsBtn) elements.lyricsBtn.classList.toggle("active", viewName === "lyrics");
 
   if (elements.mobileNavHome) elements.mobileNavHome.classList.toggle("active", viewName === "home");
   if (elements.mobileNavSearch) elements.mobileNavSearch.classList.toggle("active", viewName === "search");
   if (elements.mobileNavLibrary) elements.mobileNavLibrary.classList.toggle("active", viewName === "library");
+  if (elements.mobileNavPremium) elements.mobileNavPremium.classList.toggle("active", viewName === "premium");
 
   // Reset scroll to top
   if (elements.contentScroll) elements.contentScroll.scrollTop = 0;
@@ -2090,6 +2174,9 @@ function navigateTo(viewName, param = null) {
   } else if (viewName === "library") {
     elements.libraryView.classList.add("active");
     renderLibraryView();
+  } else if (viewName === "premium") {
+    if (elements.premiumView) elements.premiumView.classList.add("active");
+    updatePremiumUI();
   } else if (viewName === "liked") {
     elements.likedView.classList.add("active");
     renderLikedSongsView();
@@ -2296,6 +2383,34 @@ function renderLibraryView() {
     });
   }
 
+  if (filter === "recents") {
+    const recentSongs = (state.recentlyPlayed || []).map(id => TRACKS_DATA.find(t => t.id === id)).filter(Boolean);
+    if (recentSongs.length === 0) {
+      cardsHtml = `
+        <div class="empty-state" style="grid-column: 1 / -1; padding: 48px; text-align: center;">
+          <p style="font-size: 1.1rem; color: #b3b3b3;">No recently played songs yet.</p>
+          <p style="font-size: 0.9rem; color: #727272; margin-top: 8px;">Songs you play will appear here.</p>
+        </div>
+      `;
+    } else {
+      cardsHtml = recentSongs.map(s => `
+        <div class="music-card" data-track-id="${s.id}">
+          <div class="card-img-wrap">
+            <img src="${s.cover}" alt="${escapeHtml(s.title)}" data-track-cover-id="${s.id}">
+            <button class="card-play-btn" title="Play ${escapeHtml(s.title)}">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="#000000"><path d="M7.05 3.606l13.49 7.788a.7.7 0 0 1 0 1.212L7.05 20.394A.7.7 0 0 1 6 19.788V4.212a.7.7 0 0 1 1.05-.606z"/></svg>
+            </button>
+            <button class="card-more-btn" data-track-id="${s.id}" title="More options">
+              <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M3 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm6.5 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zM16 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/></svg>
+            </button>
+          </div>
+          <h4 class="card-title">${escapeHtml(s.title)}</h4>
+          <p class="card-desc">${escapeHtml(s.artist)}</p>
+        </div>
+      `).join("");
+    }
+  }
+
   elements.libraryViewContent.innerHTML = cardsHtml;
 
   // Add click handlers
@@ -2329,6 +2444,22 @@ function renderLibraryView() {
       } else {
         navigateTo("album", albName);
       }
+    });
+  });
+
+  elements.libraryViewContent.querySelectorAll(".music-card[data-track-id]").forEach(c => {
+    const tId = parseInt(c.dataset.trackId);
+    c.addEventListener("click", (e) => {
+      if (e.target.closest(".card-more-btn")) {
+        e.stopPropagation();
+        openTrackContextMenu(e, tId);
+        return;
+      }
+      playSongById(tId, TRACKS_DATA);
+    });
+    c.addEventListener("contextmenu", (e) => {
+      e.preventDefault();
+      openTrackContextMenu(e, tId);
     });
   });
 }
@@ -2587,7 +2718,7 @@ function renderBrowseGenres() {
   });
 }
 
-// Live Search Engine: title, artist, album
+// Live Search Engine: title, artist, album, playlist
 function handleLiveSearch(query) {
   const q = (query || "").trim().toLowerCase();
 
@@ -2621,7 +2752,16 @@ function handleLiveSearch(query) {
   const matchedArtists = [...new Set(matchedSongs.map(s => s.artist))];
   const matchedAlbums = [...new Set(matchedSongs.map(s => s.album))];
 
-  if (matchedSongs.length === 0) {
+  // Match Playlists
+  const allPlaylists = [...state.userPlaylists, ...DEFAULT_PLAYLISTS];
+  const matchedPlaylists = allPlaylists.filter(pl =>
+    pl.title.toLowerCase().includes(q) ||
+    (pl.desc && pl.desc.toLowerCase().includes(q))
+  );
+
+  const hasAnyResults = matchedSongs.length > 0 || matchedPlaylists.length > 0 || matchedArtists.length > 0 || matchedAlbums.length > 0;
+
+  if (!hasAnyResults) {
     elements.searchResultsFound.style.display = "none";
     elements.searchNoResults.style.display = "block";
     if (elements.noResultsTitle) elements.noResultsTitle.textContent = `No results found for "${query}"`;
@@ -2631,50 +2771,75 @@ function handleLiveSearch(query) {
   elements.searchResultsFound.style.display = "block";
   elements.searchNoResults.style.display = "none";
 
-  // Top Result Card
-  const topSong = matchedSongs[0];
-  elements.topResultCard.innerHTML = `
-    <div class="top-res-art">
-      <img src="${topSong.cover}" alt="${escapeHtml(topSong.title)}">
-    </div>
-    <h2 class="top-res-title">${escapeHtml(topSong.title)}</h2>
-    <div class="top-res-meta">
-      <span class="top-res-badge">Song</span>
-      <span>${escapeHtml(topSong.artist)}</span>
-      <span class="bullet">•</span>
-      <span>${escapeHtml(topSong.album)}</span>
-    </div>
-    <button class="card-play-btn" title="Play">
-      <svg viewBox="0 0 24 24" width="24" height="24" fill="#000000"><path d="M7.05 3.606l13.49 7.788a.7.7 0 0 1 0 1.212L7.05 20.394A.7.7 0 0 1 6 19.788V4.212a.7.7 0 0 1 1.05-.606z"/></svg>
-    </button>
-  `;
+  const searchTopRow = document.querySelector(".search-top-row");
+  if (searchTopRow) {
+    searchTopRow.style.display = matchedSongs.length > 0 ? "grid" : "none";
+  }
 
-  elements.topResultCard.onclick = () => {
-    playSongById(topSong.id, matchedSongs);
-  };
+  if (matchedSongs.length > 0) {
+    // Top Result Card
+    const topSong = matchedSongs[0];
+    elements.topResultCard.innerHTML = `
+      <div class="top-res-art">
+        <img src="${topSong.cover}" alt="${escapeHtml(topSong.title)}">
+      </div>
+      <h2 class="top-res-title">${escapeHtml(topSong.title)}</h2>
+      <div class="top-res-meta">
+        <span class="top-res-badge">Song</span>
+        <span>${escapeHtml(topSong.artist)}</span>
+        <span class="bullet">•</span>
+        <span>${escapeHtml(topSong.album)}</span>
+      </div>
+      <button class="card-play-btn" title="Play">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="#000000"><path d="M7.05 3.606l13.49 7.788a.7.7 0 0 1 0 1.212L7.05 20.394A.7.7 0 0 1 6 19.788V4.212a.7.7 0 0 1 1.05-.606z"/></svg>
+      </button>
+      <button class="card-more-btn" data-track-id="${topSong.id}" title="More options" style="opacity: 1;">
+        <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M3 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm6.5 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zM16 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/></svg>
+      </button>
+    `;
 
-  // Mini Songs List (Top 4)
-  elements.searchMiniRows.innerHTML = matchedSongs.slice(0, 4).map(song => `
-    <div class="search-mini-row" data-track-id="${song.id}">
-      <div class="search-mini-left">
-        <div class="search-mini-thumb">
-          <img src="${song.cover}" alt="${escapeHtml(song.title)}">
+    elements.topResultCard.onclick = (e) => {
+      if (e.target.closest(".card-more-btn")) {
+        e.stopPropagation();
+        openTrackContextMenu(e, topSong.id);
+        return;
+      }
+      playSongById(topSong.id, matchedSongs);
+    };
+
+    // Mini Songs List (Top 4)
+    elements.searchMiniRows.innerHTML = matchedSongs.slice(0, 4).map(song => `
+      <div class="search-mini-row" data-track-id="${song.id}">
+        <div class="search-mini-left">
+          <div class="search-mini-thumb">
+            <img src="${song.cover}" alt="${escapeHtml(song.title)}">
+          </div>
+          <div class="search-mini-meta">
+            <span class="search-mini-title">${escapeHtml(song.title)}</span>
+            <span class="search-mini-artist">${escapeHtml(song.artist)}</span>
+          </div>
         </div>
-        <div class="search-mini-meta">
-          <span class="search-mini-title">${escapeHtml(song.title)}</span>
-          <span class="search-mini-artist">${escapeHtml(song.artist)}</span>
+        <div style="display:flex;align-items:center;gap:12px;">
+          <span style="font-size:12px;color:var(--text-subdued);">${song.duration || '3:30'}</span>
+          <button class="row-more-btn" data-track-id="${song.id}" title="More options" style="background:none;border:none;color:var(--text-subdued);cursor:pointer;">
+            <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M3 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm6.5 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zM16 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/></svg>
+          </button>
         </div>
       </div>
-      <span style="font-size:12px;color:var(--text-subdued);">${song.duration || '3:30'}</span>
-    </div>
-  `).join("");
+    `).join("");
 
-  elements.searchMiniRows.querySelectorAll(".search-mini-row").forEach(row => {
-    row.onclick = () => {
+    elements.searchMiniRows.querySelectorAll(".search-mini-row").forEach(row => {
       const tId = parseInt(row.dataset.trackId);
-      playSongById(tId, matchedSongs);
-    };
-  });
+      row.onclick = (e) => {
+        if (e.target.closest(".row-more-btn")) {
+          e.stopPropagation();
+          openTrackContextMenu(e, tId);
+          return;
+        }
+        playSongById(tId, matchedSongs);
+      };
+    });
+  }
 
   // Matching Artists Shelf
   if (matchedArtists.length > 0) {
@@ -2731,6 +2896,40 @@ function handleLiveSearch(query) {
   } else if (elements.searchAlbumsShelf) {
     elements.searchAlbumsShelf.style.display = "none";
   }
+
+  // Matching Playlists Shelf
+  if (elements.searchPlaylistsShelf && matchedPlaylists.length > 0) {
+    elements.searchPlaylistsShelf.style.display = "block";
+    elements.searchPlaylistsRow.innerHTML = matchedPlaylists.slice(0, 6).map(pl => {
+      const firstSong = TRACKS_DATA.find(t => pl.tracks && pl.tracks.includes(t.id)) || TRACKS_DATA[0];
+      return `
+        <div class="music-card" data-playlist-id="${pl.id}">
+          <div class="card-img-wrap">
+            <img src="${firstSong.cover}" alt="${escapeHtml(pl.title)}">
+            <button class="card-play-btn" title="Play">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="#000000"><path d="M7.05 3.606l13.49 7.788a.7.7 0 0 1 0 1.212L7.05 20.394A.7.7 0 0 1 6 19.788V4.212a.7.7 0 0 1 1.05-.606z"/></svg>
+            </button>
+          </div>
+          <h4 class="card-title">${escapeHtml(pl.title)}</h4>
+          <p class="card-desc">Playlist • ${pl.tracks ? pl.tracks.length : 0} songs</p>
+        </div>
+      `;
+    }).join("");
+
+    elements.searchPlaylistsRow.querySelectorAll(".music-card").forEach(c => {
+      c.onclick = (e) => {
+        const plId = c.dataset.playlistId;
+        if (e.target.closest(".card-play-btn")) {
+          playPlaylistById(plId);
+        } else {
+          navigateTo("playlist", plId);
+        }
+      };
+    });
+  } else if (elements.searchPlaylistsShelf) {
+    elements.searchPlaylistsShelf.style.display = "none";
+  }
+}
 }
 
 // Queue Panel update
@@ -2867,9 +3066,13 @@ function openTrackContextMenu(e, trackId) {
   const song = TRACKS_DATA.find(t => t.id === trackId);
   if (!song) return;
 
+  if (elements.ctxTrackThumb) elements.ctxTrackThumb.src = song.cover;
+  if (elements.ctxTrackTitle) elements.ctxTrackTitle.textContent = song.title;
+  if (elements.ctxTrackArtist) elements.ctxTrackArtist.textContent = song.artist;
+
   const isLiked = state.likedSongIds.has(trackId);
   if (elements.ctxLikeLabel) {
-    elements.ctxLikeLabel.textContent = isLiked ? "Remove from Liked Songs" : "Save to Liked Songs";
+    elements.ctxLikeLabel.textContent = isLiked ? "Remove from Liked Songs" : "Add to Liked Songs";
   }
 
   // Check if viewing user playlist
@@ -2879,33 +3082,59 @@ function openTrackContextMenu(e, trackId) {
   }
 
   elements.trackContextMenu.style.display = "flex";
+  if (elements.contextMenuBackdrop) {
+    elements.contextMenuBackdrop.style.display = "block";
+  }
 
   // Position
-  let x = e.clientX;
-  let y = e.clientY;
-  const w = 220;
-  const h = 280;
-  if (x + w > window.innerWidth) x = window.innerWidth - w - 10;
-  if (y + h > window.innerHeight) y = window.innerHeight - h - 10;
+  if (window.innerWidth <= 768) {
+    elements.trackContextMenu.style.left = "";
+    elements.trackContextMenu.style.top = "";
+    elements.trackContextMenu.style.bottom = "";
+  } else {
+    let x = (e && typeof e.clientX === "number") ? e.clientX : (window.innerWidth / 2);
+    let y = (e && typeof e.clientY === "number") ? e.clientY : (window.innerHeight / 2);
+    const w = 240;
+    const h = 380;
+    if (x + w > window.innerWidth) x = window.innerWidth - w - 16;
+    if (y + h > window.innerHeight) y = window.innerHeight - h - 16;
 
-  elements.trackContextMenu.style.left = `${Math.max(10, x)}px`;
-  elements.trackContextMenu.style.top = `${Math.max(10, y)}px`;
+    elements.trackContextMenu.style.left = `${Math.max(16, x)}px`;
+    elements.trackContextMenu.style.top = `${Math.max(16, y)}px`;
+  }
 }
 
 function closeTrackContextMenu() {
   if (elements.trackContextMenu) elements.trackContextMenu.style.display = "none";
+  if (elements.contextMenuBackdrop) elements.contextMenuBackdrop.style.display = "none";
 }
 
 function setupContextMenus() {
   document.addEventListener("click", (e) => {
-    if (!e.target.closest("#trackContextMenu") && !e.target.closest(".row-more-btn")) {
+    if (!e.target.closest("#trackContextMenu") && !e.target.closest(".row-more-btn") && !e.target.closest(".card-more-btn") && !e.target.closest("#heroBannerMoreBtn") && !e.target.closest("#npOptionsBtn")) {
       closeTrackContextMenu();
     }
   });
 
+  if (elements.contextMenuBackdrop) {
+    elements.contextMenuBackdrop.addEventListener("click", closeTrackContextMenu);
+  }
+
   if (elements.ctxPlay) {
     elements.ctxPlay.addEventListener("click", () => {
       if (state.contextMenuTrackId) playSongById(state.contextMenuTrackId);
+      closeTrackContextMenu();
+    });
+  }
+
+  if (elements.ctxPlayNext) {
+    elements.ctxPlayNext.addEventListener("click", () => {
+      const song = TRACKS_DATA.find(t => t.id === state.contextMenuTrackId);
+      if (song) {
+        state.upcomingQueue.unshift(song);
+        updateQueuePanel();
+        showToast(`Playing next: ${song.title}`);
+      }
       closeTrackContextMenu();
     });
   }
@@ -2967,6 +3196,30 @@ function setupContextMenus() {
     });
   }
 
+  if (elements.ctxShareSong) {
+    elements.ctxShareSong.addEventListener("click", () => {
+      const song = TRACKS_DATA.find(t => t.id === state.contextMenuTrackId);
+      if (song) {
+        if (navigator.share) {
+          navigator.share({
+            title: song.title,
+            text: `Listen to "${song.title}" by ${song.artist} on Vibez!`,
+            url: window.location.href
+          }).catch(() => {});
+        } else if (navigator.clipboard) {
+          navigator.clipboard.writeText(`${window.location.origin} - Listen to "${song.title}" by ${song.artist}`).then(() => {
+            showToast("Song info copied to clipboard!");
+          }).catch(() => {
+            showToast(`"${song.title}" by ${song.artist}`);
+          });
+        } else {
+          showToast(`"${song.title}" by ${song.artist}`);
+        }
+      }
+      closeTrackContextMenu();
+    });
+  }
+
   if (elements.ctxCopyLink) {
     elements.ctxCopyLink.addEventListener("click", () => {
       const song = TRACKS_DATA.find(t => t.id === state.contextMenuTrackId);
@@ -2978,6 +3231,15 @@ function setupContextMenus() {
         });
       }
       closeTrackContextMenu();
+    });
+  }
+
+  if (elements.npOptionsBtn) {
+    elements.npOptionsBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      if (state.currentTrack) {
+        openTrackContextMenu(e, state.currentTrack.id);
+      }
     });
   }
 }
@@ -3154,6 +3416,7 @@ function setupEventListeners() {
   if (elements.navHomeBtn) elements.navHomeBtn.addEventListener("click", () => navigateTo("home"));
   if (elements.navSearchBtn) elements.navSearchBtn.addEventListener("click", () => navigateTo("search"));
   if (elements.navLibraryBtn) elements.navLibraryBtn.addEventListener("click", () => navigateTo("library"));
+  if (elements.navPremiumBtn) elements.navPremiumBtn.addEventListener("click", () => navigateTo("premium"));
   if (elements.brandLogo) elements.brandLogo.addEventListener("click", () => navigateTo("home"));
   if (elements.mobileTopbarBrand) elements.mobileTopbarBrand.addEventListener("click", () => navigateTo("home"));
   if (elements.topbarHomeBtn) elements.topbarHomeBtn.addEventListener("click", () => navigateTo("home"));
@@ -3162,7 +3425,15 @@ function setupEventListeners() {
   if (elements.mobileNavHome) elements.mobileNavHome.addEventListener("click", () => navigateTo("home"));
   if (elements.mobileNavSearch) elements.mobileNavSearch.addEventListener("click", () => navigateTo("search"));
   if (elements.mobileNavLibrary) elements.mobileNavLibrary.addEventListener("click", () => navigateTo("library"));
+  if (elements.mobileNavPremium) elements.mobileNavPremium.addEventListener("click", () => navigateTo("premium"));
   if (elements.mobileNavProfile) elements.mobileNavProfile.addEventListener("click", () => openModal(elements.profileModal));
+
+  if (elements.modalCreateNewPlaylistBtn) {
+    elements.modalCreateNewPlaylistBtn.addEventListener("click", () => {
+      closeModal(elements.addToPlaylistModal);
+      openCreatePlaylistModal();
+    });
+  }
 
   // History controls
   if (elements.historyBackBtn) elements.historyBackBtn.addEventListener("click", handleHistoryBack);
@@ -3298,11 +3569,13 @@ function setupEventListeners() {
   // Library View filter chips
   if (elements.libViewChipAll) elements.libViewChipAll.addEventListener("click", () => switchLibraryFilter("all"));
   if (elements.libViewChipPlaylists) elements.libViewChipPlaylists.addEventListener("click", () => switchLibraryFilter("playlists"));
+  if (elements.libViewChipRecents) elements.libViewChipRecents.addEventListener("click", () => switchLibraryFilter("recents"));
   if (elements.libViewChipArtists) elements.libViewChipArtists.addEventListener("click", () => switchLibraryFilter("artists"));
   if (elements.libViewChipAlbums) elements.libViewChipAlbums.addEventListener("click", () => switchLibraryFilter("albums"));
 
   // Sidebar filter chips
   if (elements.chipLibPlaylists) elements.chipLibPlaylists.addEventListener("click", () => switchSidebarFilter("playlists"));
+  if (elements.chipLibRecents) elements.chipLibRecents.addEventListener("click", () => switchSidebarFilter("recents"));
   if (elements.chipLibArtists) elements.chipLibArtists.addEventListener("click", () => switchSidebarFilter("artists"));
   if (elements.chipLibAlbums) elements.chipLibAlbums.addEventListener("click", () => switchSidebarFilter("albums"));
 
@@ -3486,18 +3759,20 @@ function switchHomeFilter(filter) {
 
 function switchLibraryFilter(filter) {
   state.libraryFilter = filter;
-  elements.libViewChipAll.classList.toggle("active", filter === "all");
-  elements.libViewChipPlaylists.classList.toggle("active", filter === "playlists");
-  elements.libViewChipArtists.classList.toggle("active", filter === "artists");
-  elements.libViewChipAlbums.classList.toggle("active", filter === "albums");
+  if (elements.libViewChipAll) elements.libViewChipAll.classList.toggle("active", filter === "all");
+  if (elements.libViewChipPlaylists) elements.libViewChipPlaylists.classList.toggle("active", filter === "playlists");
+  if (elements.libViewChipRecents) elements.libViewChipRecents.classList.toggle("active", filter === "recents");
+  if (elements.libViewChipArtists) elements.libViewChipArtists.classList.toggle("active", filter === "artists");
+  if (elements.libViewChipAlbums) elements.libViewChipAlbums.classList.toggle("active", filter === "albums");
   renderLibraryView();
 }
 
 function switchSidebarFilter(filter) {
   state.libraryFilter = filter;
-  elements.chipLibPlaylists.classList.toggle("active", filter === "playlists");
-  elements.chipLibArtists.classList.toggle("active", filter === "artists");
-  elements.chipLibAlbums.classList.toggle("active", filter === "albums");
+  if (elements.chipLibPlaylists) elements.chipLibPlaylists.classList.toggle("active", filter === "playlists");
+  if (elements.chipLibRecents) elements.chipLibRecents.classList.toggle("active", filter === "recents");
+  if (elements.chipLibArtists) elements.chipLibArtists.classList.toggle("active", filter === "artists");
+  if (elements.chipLibAlbums) elements.chipLibAlbums.classList.toggle("active", filter === "albums");
   renderSidebarLibrary();
 }
 
@@ -3621,6 +3896,119 @@ function renderPopularAlbums() {
   });
 }
 
+function renderHeroBanner() {
+  const feat = TRACKS_DATA[20] || TRACKS_DATA[0];
+  if (!feat) return;
+
+  if (elements.heroBannerImg) elements.heroBannerImg.src = feat.cover;
+  if (elements.heroBannerTitle) elements.heroBannerTitle.textContent = feat.title;
+  if (elements.heroBannerArtist) elements.heroBannerArtist.textContent = feat.artist;
+  if (elements.heroBannerDesc) elements.heroBannerDesc.textContent = `Streaming exclusively in Ultra HD on Vibez from ${feat.album}.`;
+
+  const isLiked = state.likedSongIds.has(feat.id);
+  if (elements.heroBannerLikeBtn) {
+    elements.heroBannerLikeBtn.classList.toggle("liked", isLiked);
+  }
+  if (elements.heroBannerLikeText) {
+    elements.heroBannerLikeText.textContent = isLiked ? "Saved to Library" : "Save to Library";
+  }
+
+  if (elements.heroBannerPlayBtn) {
+    elements.heroBannerPlayBtn.onclick = () => {
+      playSongById(feat.id, TRACKS_DATA);
+    };
+  }
+
+  if (elements.heroBannerLikeBtn) {
+    elements.heroBannerLikeBtn.onclick = () => {
+      toggleLikeTrack(feat.id);
+    };
+  }
+
+  if (elements.heroBannerMoreBtn) {
+    elements.heroBannerMoreBtn.onclick = (e) => {
+      e.stopPropagation();
+      openTrackContextMenu(e, feat.id);
+    };
+  }
+}
+
+function renderRecentlyPlayedRow() {
+  if (!elements.recentlyPlayedRow) return;
+  const recentIds = (state.recentlyPlayed && state.recentlyPlayed.length > 0)
+    ? state.recentlyPlayed
+    : [21, 20, 17, 15, 11, 8];
+  const recentSongs = recentIds.map(id => TRACKS_DATA.find(t => t.id === id)).filter(Boolean);
+
+  elements.recentlyPlayedRow.innerHTML = recentSongs.map(s => `
+    <div class="music-card" data-track-id="${s.id}">
+      <div class="card-img-wrap">
+        <img src="${s.cover}" alt="${escapeHtml(s.title)}" data-track-cover-id="${s.id}">
+        <button class="card-play-btn" title="Play ${escapeHtml(s.title)}">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="#000000"><path d="M7.05 3.606l13.49 7.788a.7.7 0 0 1 0 1.212L7.05 20.394A.7.7 0 0 1 6 19.788V4.212a.7.7 0 0 1 1.05-.606z"/></svg>
+        </button>
+        <button class="card-more-btn" data-track-id="${s.id}" title="More options">
+          <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M3 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm6.5 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zM16 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/></svg>
+        </button>
+      </div>
+      <h4 class="card-title">${escapeHtml(s.title)}</h4>
+      <p class="card-desc">${escapeHtml(s.artist)}</p>
+    </div>
+  `).join("");
+
+  elements.recentlyPlayedRow.querySelectorAll(".music-card").forEach(c => {
+    const tId = parseInt(c.dataset.trackId);
+    c.addEventListener("click", (e) => {
+      if (e.target.closest(".card-more-btn")) {
+        e.stopPropagation();
+        openTrackContextMenu(e, tId);
+        return;
+      }
+      playSongById(tId, recentSongs);
+    });
+    c.addEventListener("contextmenu", (e) => {
+      e.preventDefault();
+      openTrackContextMenu(e, tId);
+    });
+  });
+}
+
+function renderPopularSongsRow() {
+  if (!elements.popularSongsRow) return;
+  const popSongs = [TRACKS_DATA[5], TRACKS_DATA[10], TRACKS_DATA[16], TRACKS_DATA[19], TRACKS_DATA[20], TRACKS_DATA[7], TRACKS_DATA[14], TRACKS_DATA[17]];
+  elements.popularSongsRow.innerHTML = popSongs.map(s => `
+    <div class="music-card" data-track-id="${s.id}">
+      <div class="card-img-wrap">
+        <img src="${s.cover}" alt="${escapeHtml(s.title)}" data-track-cover-id="${s.id}">
+        <button class="card-play-btn" title="Play ${escapeHtml(s.title)}">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="#000000"><path d="M7.05 3.606l13.49 7.788a.7.7 0 0 1 0 1.212L7.05 20.394A.7.7 0 0 1 6 19.788V4.212a.7.7 0 0 1 1.05-.606z"/></svg>
+        </button>
+        <button class="card-more-btn" data-track-id="${s.id}" title="More options">
+          <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M3 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm6.5 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zM16 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/></svg>
+        </button>
+      </div>
+      <h4 class="card-title">${escapeHtml(s.title)}</h4>
+      <p class="card-desc">${escapeHtml(s.artist)}</p>
+    </div>
+  `).join("");
+
+  elements.popularSongsRow.querySelectorAll(".music-card").forEach(c => {
+    const tId = parseInt(c.dataset.trackId);
+    c.addEventListener("click", (e) => {
+      if (e.target.closest(".card-more-btn")) {
+        e.stopPropagation();
+        openTrackContextMenu(e, tId);
+        return;
+      }
+      playSongById(tId, popSongs);
+    });
+    c.addEventListener("contextmenu", (e) => {
+      e.preventDefault();
+      openTrackContextMenu(e, tId);
+    });
+  });
+}
+
 function renderTrendingSongs() {
   const biggestHits = [TRACKS_DATA[20], TRACKS_DATA[19], TRACKS_DATA[16], TRACKS_DATA[14], TRACKS_DATA[17], TRACKS_DATA[4], TRACKS_DATA[7], TRACKS_DATA[12]];
   elements.todaysHitsRow.innerHTML = biggestHits.map(s => `
@@ -3630,6 +4018,9 @@ function renderTrendingSongs() {
         <button class="card-play-btn" title="Play ${escapeHtml(s.title)}">
           <svg viewBox="0 0 24 24" width="24" height="24" fill="#000000"><path d="M7.05 3.606l13.49 7.788a.7.7 0 0 1 0 1.212L7.05 20.394A.7.7 0 0 1 6 19.788V4.212a.7.7 0 0 1 1.05-.606z"/></svg>
         </button>
+        <button class="card-more-btn" data-track-id="${s.id}" title="More options">
+          <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M3 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm6.5 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zM16 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/></svg>
+        </button>
       </div>
       <h4 class="card-title">${escapeHtml(s.title)}</h4>
       <p class="card-desc">${escapeHtml(s.artist)}</p>
@@ -3637,9 +4028,94 @@ function renderTrendingSongs() {
   `).join("");
 
   elements.todaysHitsRow.querySelectorAll(".music-card").forEach(c => {
-    c.addEventListener("click", () => {
-      const tId = parseInt(c.dataset.trackId);
-      playSongById(tId, TRACKS_DATA);
+    const tId = parseInt(c.dataset.trackId);
+    c.addEventListener("click", (e) => {
+      if (e.target.closest(".card-more-btn")) {
+        e.stopPropagation();
+        openTrackContextMenu(e, tId);
+        return;
+      }
+      playSongById(tId, biggestHits);
+    });
+    c.addEventListener("contextmenu", (e) => {
+      e.preventDefault();
+      openTrackContextMenu(e, tId);
+    });
+  });
+}
+
+function renderNewReleasesRow() {
+  if (!elements.newReleasesRow) return;
+  const newSongs = [TRACKS_DATA[20], TRACKS_DATA[18], TRACKS_DATA[15], TRACKS_DATA[11], TRACKS_DATA[6], TRACKS_DATA[8], TRACKS_DATA[2]];
+  elements.newReleasesRow.innerHTML = newSongs.map(s => `
+    <div class="music-card" data-track-id="${s.id}">
+      <div class="card-img-wrap">
+        <img src="${s.cover}" alt="${escapeHtml(s.title)}" data-track-cover-id="${s.id}">
+        <button class="card-play-btn" title="Play ${escapeHtml(s.title)}">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="#000000"><path d="M7.05 3.606l13.49 7.788a.7.7 0 0 1 0 1.212L7.05 20.394A.7.7 0 0 1 6 19.788V4.212a.7.7 0 0 1 1.05-.606z"/></svg>
+        </button>
+        <button class="card-more-btn" data-track-id="${s.id}" title="More options">
+          <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M3 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm6.5 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zM16 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/></svg>
+        </button>
+      </div>
+      <h4 class="card-title">${escapeHtml(s.title)}</h4>
+      <p class="card-desc">${escapeHtml(s.artist)}</p>
+    </div>
+  `).join("");
+
+  elements.newReleasesRow.querySelectorAll(".music-card").forEach(c => {
+    const tId = parseInt(c.dataset.trackId);
+    c.addEventListener("click", (e) => {
+      if (e.target.closest(".card-more-btn")) {
+        e.stopPropagation();
+        openTrackContextMenu(e, tId);
+        return;
+      }
+      playSongById(tId, newSongs);
+    });
+    c.addEventListener("contextmenu", (e) => {
+      e.preventDefault();
+      openTrackContextMenu(e, tId);
+    });
+  });
+}
+
+function renderFavoriteSongsRow() {
+  if (!elements.favoriteSongsRow) return;
+  const likedSongs = Array.from(state.likedSongIds).map(id => TRACKS_DATA.find(t => t.id === id)).filter(Boolean);
+  const favSongs = likedSongs.length > 0
+    ? likedSongs
+    : [TRACKS_DATA[19], TRACKS_DATA[16], TRACKS_DATA[10], TRACKS_DATA[4], TRACKS_DATA[7], TRACKS_DATA[20]];
+
+  elements.favoriteSongsRow.innerHTML = favSongs.map(s => `
+    <div class="music-card" data-track-id="${s.id}">
+      <div class="card-img-wrap">
+        <img src="${s.cover}" alt="${escapeHtml(s.title)}" data-track-cover-id="${s.id}">
+        <button class="card-play-btn" title="Play ${escapeHtml(s.title)}">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="#000000"><path d="M7.05 3.606l13.49 7.788a.7.7 0 0 1 0 1.212L7.05 20.394A.7.7 0 0 1 6 19.788V4.212a.7.7 0 0 1 1.05-.606z"/></svg>
+        </button>
+        <button class="card-more-btn" data-track-id="${s.id}" title="More options">
+          <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M3 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm6.5 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zM16 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/></svg>
+        </button>
+      </div>
+      <h4 class="card-title">${escapeHtml(s.title)}</h4>
+      <p class="card-desc">${escapeHtml(s.artist)}</p>
+    </div>
+  `).join("");
+
+  elements.favoriteSongsRow.querySelectorAll(".music-card").forEach(c => {
+    const tId = parseInt(c.dataset.trackId);
+    c.addEventListener("click", (e) => {
+      if (e.target.closest(".card-more-btn")) {
+        e.stopPropagation();
+        openTrackContextMenu(e, tId);
+        return;
+      }
+      playSongById(tId, favSongs);
+    });
+    c.addEventListener("contextmenu", (e) => {
+      e.preventDefault();
+      openTrackContextMenu(e, tId);
     });
   });
 }
@@ -3654,6 +4130,9 @@ function renderRecommendedMusic() {
         <button class="card-play-btn" title="Play ${escapeHtml(s.title)}">
           <svg viewBox="0 0 24 24" width="24" height="24" fill="#000000"><path d="M7.05 3.606l13.49 7.788a.7.7 0 0 1 0 1.212L7.05 20.394A.7.7 0 0 1 6 19.788V4.212a.7.7 0 0 1 1.05-.606z"/></svg>
         </button>
+        <button class="card-more-btn" data-track-id="${s.id}" title="More options">
+          <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M3 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm6.5 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zM16 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/></svg>
+        </button>
       </div>
       <h4 class="card-title">${escapeHtml(s.title)}</h4>
       <p class="card-desc">${escapeHtml(s.artist)} • ${escapeHtml(s.album)}</p>
@@ -3661,9 +4140,18 @@ function renderRecommendedMusic() {
   `).join("");
 
   elements.recommendedRow.querySelectorAll(".music-card").forEach(c => {
-    c.addEventListener("click", () => {
-      const tId = parseInt(c.dataset.trackId);
+    const tId = parseInt(c.dataset.trackId);
+    c.addEventListener("click", (e) => {
+      if (e.target.closest(".card-more-btn")) {
+        e.stopPropagation();
+        openTrackContextMenu(e, tId);
+        return;
+      }
       playSongById(tId, recSongs);
+    });
+    c.addEventListener("contextmenu", (e) => {
+      e.preventDefault();
+      openTrackContextMenu(e, tId);
     });
   });
 }
@@ -3751,6 +4239,49 @@ function renderPodcasts() {
 }
 
 // ==========================================================================
+// 12.5 PREMIUM INTERACTIONS & SUBSCRIPTION MANAGER
+// ==========================================================================
+
+function selectPremiumPlan(planName) {
+  state.currentPlan = planName;
+  saveToStorage();
+  updatePremiumUI();
+  showToast(`Subscribed to Vibez ${planName}! Unlimited skips & offline playback unlocked.`);
+}
+
+function updatePremiumUI() {
+  document.querySelectorAll(".plan-action-btn").forEach(btn => {
+    const isThisPlan = (btn.dataset.plan || "Individual") === state.currentPlan;
+    if (isThisPlan) {
+      btn.textContent = "Current Plan ✓";
+      btn.classList.add("active-plan-btn");
+      btn.style.background = "#ffffff";
+      btn.style.color = "#000000";
+    } else {
+      btn.textContent = "Get Started";
+      btn.classList.remove("active-plan-btn");
+      btn.style.background = "";
+      btn.style.color = "";
+    }
+  });
+}
+
+function setupPremiumInteractions() {
+  if (elements.claimPremiumHeroBtn) {
+    elements.claimPremiumHeroBtn.addEventListener("click", () => {
+      selectPremiumPlan("Individual");
+    });
+  }
+
+  document.querySelectorAll(".plan-action-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const planName = btn.dataset.plan || "Individual";
+      selectPremiumPlan(planName);
+    });
+  });
+}
+
+// ==========================================================================
 // 13. INITIALIZATION
 // ==========================================================================
 
@@ -3758,16 +4289,23 @@ function initApp() {
   loadFromStorage();
   setTimeGreeting();
 
-  // 1. Render all 8 Home Sections
+  // 1. Render all Home Sections & Hero Banner
+  renderHeroBanner();
   renderHomeQuickGrid();
+  renderRecentlyPlayedRow();
   renderMadeForYou();
-  renderPopularAlbums();
+  renderPopularSongsRow();
   renderTrendingSongs();
-  renderRecommendedMusic();
-  renderHomePlaylistsRow();
   renderPopularArtists();
+  renderPopularAlbums();
+  renderHomePlaylistsRow();
+  renderNewReleasesRow();
+  renderFavoriteSongsRow();
+  renderRecommendedMusic();
   renderTrackRows(elements.homeTrackRows, TRACKS_DATA);
   renderPodcasts();
+  setupPremiumInteractions();
+  updatePremiumUI();
 
   // 2. Play All Home Button
   if (elements.playAllHomeBtn) {

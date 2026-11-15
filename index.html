@@ -51,6 +51,10 @@
             <svg viewBox="0 0 24 24" width="24" height="24" class="nav-icon"><path fill="currentColor" d="M3 22a1 1 0 0 1-1-1V3a1 1 0 0 1 2 0v18a1 1 0 0 1-1 1zM15.5 2.134A1 1 0 0 0 14 3v18a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V3a1 1 0 0 0-1.5-.866l-5 2.887V3a1 1 0 0 0-.5-.866zM16 19.268l4-2.309V4.732l-4 2.31v12.226zM7.5 2.134A1 1 0 0 0 6 3v18a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1V3a1 1 0 0 0-.5-.866l-1-.577z"/></svg>
             <span>Your Library</span>
           </button>
+          <button class="nav-item" id="navPremiumBtn" data-view="premium">
+            <svg viewBox="0 0 24 24" width="24" height="24" class="nav-icon"><path fill="currentColor" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <span>Premium</span>
+          </button>
         </nav>
       </div>
 
@@ -76,6 +80,7 @@
         <!-- Filter Chips in Library -->
         <div class="library-chips">
           <button class="chip active" id="chipLibPlaylists" data-lib-filter="playlists">Playlists</button>
+          <button class="chip" id="chipLibRecents" data-lib-filter="recents">Recents</button>
           <button class="chip" id="chipLibArtists" data-lib-filter="artists">Artists</button>
           <button class="chip" id="chipLibAlbums" data-lib-filter="albums">Albums</button>
         </div>
@@ -250,17 +255,64 @@
 
           <!-- Main Music Sub-container -->
           <div id="homeMusicSubcontainer">
-            <!-- Section 2: Recently Played / Quick Access (6-Card Quick-Play Grid) -->
+            
+            <!-- SPOTIFY HERO BANNER SECTION (RESPONSIVE) -->
+            <div class="home-hero-banner" id="homeHeroBanner">
+              <div class="hero-banner-content">
+                <div class="hero-banner-badge">
+                  <span class="badge-dot"></span> FEATURED SPOTLIGHT
+                </div>
+                <h1 class="hero-banner-title" id="heroBannerTitle">Die With A Smile</h1>
+                <p class="hero-banner-artist" id="heroBannerArtist">Lady Gaga &amp; Bruno Mars • Acoustic Edition</p>
+                <p class="hero-banner-desc" id="heroBannerDesc">The sensational global chart-topping acoustic ballad. Stream in ultra-high fidelity master audio on VIBEZ.</p>
+                <div class="hero-banner-actions">
+                  <button class="pill-btn green-play-pill" id="heroBannerPlayBtn" title="Play Die With A Smile">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M7.05 3.606l13.49 7.788a.7.7 0 0 1 0 1.212L7.05 20.394A.7.7 0 0 1 6 19.788V4.212a.7.7 0 0 1 1.05-.606z"/></svg>
+                    <span>Play Now</span>
+                  </button>
+                  <button class="pill-btn outline-pill" id="heroBannerLikeBtn" title="Save to Liked Songs">
+                    <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M1.69 2A4.582 4.582 0 0 1 8 2.023 4.583 4.583 0 0 1 11.88.75 4.6 4.6 0 0 1 16 5.347c0 3.238-2.923 6.08-7.53 10.203a.75.75 0 0 1-.94 0C2.923 11.427 0 8.585 0 5.347 0 3.233 1.488 1.488 3.69 1.25z"/></svg>
+                    <span id="heroBannerLikeText">Save</span>
+                  </button>
+                  <button class="circle-btn hero-more-btn" id="heroBannerMoreBtn" title="More options">
+                    <svg viewBox="0 0 16 16" width="18" height="18" fill="currentColor"><circle cx="3" cy="8" r="1.5"/><circle cx="8" cy="8" r="1.5"/><circle cx="13" cy="8" r="1.5"/></svg>
+                  </button>
+                </div>
+              </div>
+              <div class="hero-banner-art">
+                <div class="hero-art-glow"></div>
+                <img src="" alt="Featured Release Artwork" id="heroBannerImg" class="hero-art-image">
+              </div>
+            </div>
+
+            <!-- Quick Access (6-Card Quick-Play Grid) -->
             <div class="shelf-section quick-section">
               <div class="quick-grid" id="quickGrid">
                 <!-- Rendered by JS -->
               </div>
             </div>
 
-            <!-- Section 3: Made For You Row -->
+            <!-- Section: Recently Played -->
+            <div class="shelf-section" id="recentlyPlayedShelf">
+              <div class="shelf-header">
+                <div>
+                  <h2 class="shelf-title">Recently Played</h2>
+                  <p class="shelf-subtitle">Jump straight back into your recent music</p>
+                </div>
+                <button class="shelf-show-all" id="showAllRecentlyPlayed">Show all</button>
+              </div>
+              <div class="cards-row custom-scrollbar" id="recentlyPlayedRow">
+                <!-- Rendered by JS -->
+              </div>
+            </div>
+
+            <!-- Section: Made For You Row -->
             <div class="shelf-section">
               <div class="shelf-header">
-                <h2 class="shelf-title">Made For You</h2>
+                <div>
+                  <h2 class="shelf-title">Made For You</h2>
+                  <p class="shelf-subtitle">Custom mixes inspired by your listening taste</p>
+                </div>
                 <button class="shelf-show-all" id="showAllMadeForYou">Show all</button>
               </div>
               <div class="cards-row custom-scrollbar" id="madeForYouRow">
@@ -268,21 +320,21 @@
               </div>
             </div>
 
-            <!-- Section 4: Popular Albums Row -->
-            <div class="shelf-section">
+            <!-- Section: Popular Songs Row -->
+            <div class="shelf-section" id="popularSongsShelf">
               <div class="shelf-header">
                 <div>
-                  <h2 class="shelf-title">Popular Albums</h2>
-                  <p class="shelf-subtitle">Complete studio recordings and classic albums from our catalog</p>
+                  <h2 class="shelf-title">Popular Songs</h2>
+                  <p class="shelf-subtitle">Most streamed tracks across VIBEZ worldwide</p>
                 </div>
-                <button class="shelf-show-all" id="showAllAlbums">Show all</button>
+                <button class="shelf-show-all" id="showAllPopularSongs">Show all</button>
               </div>
-              <div class="cards-row custom-scrollbar" id="popularAlbumsRow">
+              <div class="cards-row custom-scrollbar" id="popularSongsRow">
                 <!-- Rendered by JS -->
               </div>
             </div>
 
-            <!-- Section 5: Trending Songs Row -->
+            <!-- Section: Trending Songs Row -->
             <div class="shelf-section">
               <div class="shelf-header">
                 <div>
@@ -296,7 +348,77 @@
               </div>
             </div>
 
-            <!-- Section 6: Recommended Music Row -->
+            <!-- Section: Popular Artists Row -->
+            <div class="shelf-section">
+              <div class="shelf-header">
+                <div>
+                  <h2 class="shelf-title">Popular Artists</h2>
+                  <p class="shelf-subtitle">Your favorite voices and chart-topping creators</p>
+                </div>
+                <button class="shelf-show-all" id="showAllArtists">Show all</button>
+              </div>
+              <div class="cards-row custom-scrollbar" id="artistsRow">
+                <!-- Rendered by JS -->
+              </div>
+            </div>
+
+            <!-- Section: Popular Albums Row -->
+            <div class="shelf-section">
+              <div class="shelf-header">
+                <div>
+                  <h2 class="shelf-title">Popular Albums</h2>
+                  <p class="shelf-subtitle">Complete studio recordings and classic albums from our catalog</p>
+                </div>
+                <button class="shelf-show-all" id="showAllAlbums">Show all</button>
+              </div>
+              <div class="cards-row custom-scrollbar" id="popularAlbumsRow">
+                <!-- Rendered by JS -->
+              </div>
+            </div>
+
+            <!-- Section: Recommended Playlists Row -->
+            <div class="shelf-section">
+              <div class="shelf-header">
+                <div>
+                  <h2 class="shelf-title">Recommended Playlists</h2>
+                  <p class="shelf-subtitle">Handcrafted collections and mixes tailored for every mood</p>
+                </div>
+                <button class="shelf-show-all" id="showAllPlaylists">Show all</button>
+              </div>
+              <div class="cards-row custom-scrollbar" id="homePlaylistsRow">
+                <!-- Rendered by JS -->
+              </div>
+            </div>
+
+            <!-- Section: New Releases Row -->
+            <div class="shelf-section" id="newReleasesShelf">
+              <div class="shelf-header">
+                <div>
+                  <h2 class="shelf-title">New Releases</h2>
+                  <p class="shelf-subtitle">Fresh drops and newly added master tracks</p>
+                </div>
+                <button class="shelf-show-all" id="showAllNewReleases">Show all</button>
+              </div>
+              <div class="cards-row custom-scrollbar" id="newReleasesRow">
+                <!-- Rendered by JS -->
+              </div>
+            </div>
+
+            <!-- Section: Your Favorite Songs Row -->
+            <div class="shelf-section" id="favoriteSongsShelf">
+              <div class="shelf-header">
+                <div>
+                  <h2 class="shelf-title">Your Favorite Songs</h2>
+                  <p class="shelf-subtitle">Tracks you've added to your Liked Songs collection</p>
+                </div>
+                <button class="shelf-show-all" id="showAllFavorites">Show all</button>
+              </div>
+              <div class="cards-row custom-scrollbar" id="favoriteSongsRow">
+                <!-- Rendered by JS -->
+              </div>
+            </div>
+
+            <!-- Section: Recommended Music Row -->
             <div class="shelf-section">
               <div class="shelf-header">
                 <div>
@@ -306,31 +428,6 @@
                 <button class="shelf-show-all" id="showAllRecommended">Show all</button>
               </div>
               <div class="cards-row custom-scrollbar" id="recommendedRow">
-                <!-- Rendered by JS -->
-              </div>
-            </div>
-
-            <!-- Section 7: Your Playlists Row -->
-            <div class="shelf-section">
-              <div class="shelf-header">
-                <div>
-                  <h2 class="shelf-title">Your Playlists</h2>
-                  <p class="shelf-subtitle">Personal mixes and curated collections saved to your account</p>
-                </div>
-                <button class="shelf-show-all" id="showAllPlaylists">Show all</button>
-              </div>
-              <div class="cards-row custom-scrollbar" id="homePlaylistsRow">
-                <!-- Rendered by JS -->
-              </div>
-            </div>
-
-            <!-- Popular Artists Row -->
-            <div class="shelf-section">
-              <div class="shelf-header">
-                <h2 class="shelf-title">Popular Artists</h2>
-                <button class="shelf-show-all" id="showAllArtists">Show all</button>
-              </div>
-              <div class="cards-row custom-scrollbar" id="artistsRow">
                 <!-- Rendered by JS -->
               </div>
             </div>
@@ -458,6 +555,11 @@
                 <h3 class="shelf-title">Albums</h3>
                 <div class="cards-row" id="searchAlbumsRow"></div>
               </div>
+
+              <div class="shelf-section" id="searchPlaylistsShelf" style="display: none;">
+                <h3 class="shelf-title">Playlists</h3>
+                <div class="cards-row" id="searchPlaylistsRow"></div>
+              </div>
             </div>
 
             <div id="searchNoResults" style="display: none; padding: 60px 20px; text-align: center; color: var(--text-subdued);">
@@ -489,6 +591,7 @@
             <div class="home-chips">
               <button class="chip active" id="libViewChipAll" data-lib-view-filter="all">All</button>
               <button class="chip" id="libViewChipPlaylists" data-lib-view-filter="playlists">Playlists</button>
+              <button class="chip" id="libViewChipRecents" data-lib-view-filter="recents">Recently Played</button>
               <button class="chip" id="libViewChipArtists" data-lib-view-filter="artists">Artists</button>
               <button class="chip" id="libViewChipAlbums" data-lib-view-filter="albums">Albums</button>
             </div>
@@ -632,6 +735,213 @@
           <div class="lyrics-scroll-wrapper" id="lyricsScrollWrapper">
             <div class="lyrics-container" id="lyricsContainer">
               <!-- Live karaoke timed lyrics lines -->
+            </div>
+          </div>
+        </div>
+
+        <!-- ================= PREMIUM VIEW (DEDICATED FULL VIEW) ================= -->
+        <div class="view-section premium-view-section" id="premiumView">
+          <!-- Premium Hero -->
+          <div class="premium-hero-card">
+            <div class="premium-hero-badge">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="#1ed760"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <span>VIBEZ PREMIUM</span>
+            </div>
+            <h1 class="premium-hero-title">Listen without limits. Try 3 months of Premium for free.</h1>
+            <p class="premium-hero-subtitle">Enjoy uninterrupted ad-free music, offline listening, synchronized karaoke lyrics, and studio master sound quality across all devices.</p>
+            <div class="premium-hero-actions">
+              <button class="pill-btn premium-btn premium-hero-cta" id="claimPremiumHeroBtn">Try 3 Months Free</button>
+              <button class="pill-btn outline-pill" id="viewAllPlansBtn">View All Plans</button>
+            </div>
+            <p class="premium-terms-text">Free for 3 months, then $10.99 per month after. Offer available only to users who haven't already tried Premium. Terms apply.</p>
+          </div>
+
+          <!-- Why Go Premium Benefits -->
+          <div class="premium-perks-section">
+            <h2 class="section-title">Why upgrade to VIBEZ Premium?</h2>
+            <div class="perks-grid">
+              <div class="perk-card">
+                <div class="perk-icon-wrap" style="background: rgba(30, 215, 96, 0.15);">
+                  <svg viewBox="0 0 24 24" width="28" height="28" fill="#1ed760"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+                </div>
+                <h3>Ad-free music listening</h3>
+                <p>Never get interrupted in the middle of your favorite songs. Pure uninterrupted streaming.</p>
+              </div>
+
+              <div class="perk-card">
+                <div class="perk-icon-wrap" style="background: rgba(0, 242, 254, 0.15);">
+                  <svg viewBox="0 0 24 24" width="28" height="28" fill="#00f2fe"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/></svg>
+                </div>
+                <h3>Download to listen offline</h3>
+                <p>Save tracks straight to your device and keep listening anywhere without using mobile data.</p>
+              </div>
+
+              <div class="perk-card">
+                <div class="perk-icon-wrap" style="background: rgba(168, 85, 247, 0.15);">
+                  <svg viewBox="0 0 24 24" width="28" height="28" fill="#a855f7"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H8V4h12v12zm-7-2l5-4-5-4v8z"/></svg>
+                </div>
+                <h3>Play any song in any order</h3>
+                <p>Total control with unlimited skips, precise seeking scrubbers, and live karaoke synchronization.</p>
+              </div>
+
+              <div class="perk-card">
+                <div class="perk-icon-wrap" style="background: rgba(245, 158, 11, 0.15);">
+                  <svg viewBox="0 0 24 24" width="28" height="28" fill="#f59e0b"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
+                </div>
+                <h3>High fidelity master sound</h3>
+                <p>Feel every note with pristine, uncompressed 320kbps audio powered by Cloudinary streaming.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Subscription Plans Grid -->
+          <div class="premium-plans-section" id="plansSection">
+            <h2 class="section-title">Pick the plan that suits you best</h2>
+            <p class="section-subtitle">Listen without limits on your phone, tablet, laptop, and desktop. Cancel anytime with one click.</p>
+            
+            <div class="premium-plans-grid">
+              <!-- Plan 1: Individual -->
+              <div class="plan-card featured">
+                <div class="plan-badge">3 months free</div>
+                <h3 class="plan-name">Individual</h3>
+                <div class="plan-price">$10.99 <span class="price-period">/ month after trial</span></div>
+                <div class="plan-account-info">1 Premium account</div>
+                <div class="plan-divider"></div>
+                <ul class="plan-features">
+                  <li>✓ Ad-free music listening on all devices</li>
+                  <li>✓ Download 21 master tracks offline</li>
+                  <li>✓ Play in any order with unlimited skips</li>
+                  <li>✓ Real-time synced karaoke lyrics</li>
+                  <li>✓ High fidelity 320kbps audio</li>
+                  <li>✓ Cancel online anytime</li>
+                </ul>
+                <button class="pill-btn premium-btn plan-action-btn" data-plan="Individual">Try 3 Months Free</button>
+              </div>
+
+              <!-- Plan 2: Duo -->
+              <div class="plan-card">
+                <div class="plan-badge" style="background:#535353;">1 month free</div>
+                <h3 class="plan-name">Duo</h3>
+                <div class="plan-price">$14.99 <span class="price-period">/ month after trial</span></div>
+                <div class="plan-account-info">2 Premium accounts for couples</div>
+                <div class="plan-divider"></div>
+                <ul class="plan-features">
+                  <li>✓ 2 separate Premium accounts</li>
+                  <li>✓ Duo Mix: an auto-updating shared playlist</li>
+                  <li>✓ Ad-free music listening & offline playback</li>
+                  <li>✓ Real-time synced karaoke lyrics</li>
+                  <li>✓ High fidelity 320kbps audio</li>
+                  <li>✓ Cancel online anytime</li>
+                </ul>
+                <button class="pill-btn premium-btn plan-action-btn" data-plan="Duo">Get Duo</button>
+              </div>
+
+              <!-- Plan 3: Family -->
+              <div class="plan-card">
+                <div class="plan-badge" style="background:#535353;">1 month free</div>
+                <h3 class="plan-name">Family</h3>
+                <div class="plan-price">$16.99 <span class="price-period">/ month after trial</span></div>
+                <div class="plan-account-info">Up to 6 Premium accounts</div>
+                <div class="plan-divider"></div>
+                <ul class="plan-features">
+                  <li>✓ 6 individual accounts for household members</li>
+                  <li>✓ Family Mix: playlist for your family</li>
+                  <li>✓ Block explicit music for young listeners</li>
+                  <li>✓ Separate playlists and liked songs</li>
+                  <li>✓ High fidelity 320kbps audio</li>
+                  <li>✓ Cancel online anytime</li>
+                </ul>
+                <button class="pill-btn premium-btn plan-action-btn" data-plan="Family">Get Family</button>
+              </div>
+
+              <!-- Plan 4: Student -->
+              <div class="plan-card">
+                <div class="plan-badge" style="background:#535353;">Special discount</div>
+                <h3 class="plan-name">Student</h3>
+                <div class="plan-price">$5.99 <span class="price-period">/ month</span></div>
+                <div class="plan-account-info">1 verified student account</div>
+                <div class="plan-divider"></div>
+                <ul class="plan-features">
+                  <li>✓ Special 50% discount for eligible college students</li>
+                  <li>✓ Ad-free music listening on all devices</li>
+                  <li>✓ Download tracks offline</li>
+                  <li>✓ Real-time synced karaoke lyrics</li>
+                  <li>✓ High fidelity 320kbps audio</li>
+                  <li>✓ Cancel online anytime</li>
+                </ul>
+                <button class="pill-btn premium-btn plan-action-btn" data-plan="Student">Get Student</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Feature Comparison Matrix -->
+          <div class="premium-comparison-section">
+            <h2 class="section-title">Experience the difference</h2>
+            <div class="comparison-table-wrapper custom-scrollbar">
+              <table class="comparison-table">
+                <thead>
+                  <tr>
+                    <th>What you get</th>
+                    <th>VIBEZ Free</th>
+                    <th class="col-highlight">VIBEZ Premium</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Ad-free music listening</td>
+                    <td>—</td>
+                    <td class="col-highlight text-green">✓ Included</td>
+                  </tr>
+                  <tr>
+                    <td>Download songs for offline listening</td>
+                    <td>—</td>
+                    <td class="col-highlight text-green">✓ Included</td>
+                  </tr>
+                  <tr>
+                    <td>Play songs in any order</td>
+                    <td>Shuffle only</td>
+                    <td class="col-highlight text-green">✓ Any order</td>
+                  </tr>
+                  <tr>
+                    <td>High quality audio fidelity</td>
+                    <td>160 kbps</td>
+                    <td class="col-highlight text-green">✓ 320 kbps Master</td>
+                  </tr>
+                  <tr>
+                    <td>Real-time synced karaoke lyrics</td>
+                    <td>Basic</td>
+                    <td class="col-highlight text-green">✓ Full-Screen Live Sync</td>
+                  </tr>
+                  <tr>
+                    <td>Unlimited skips &amp; seek scrub</td>
+                    <td>6 skips / hr</td>
+                    <td class="col-highlight text-green">✓ Unlimited</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- FAQs Section -->
+          <div class="premium-faq-section">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            <div class="faq-list">
+              <details class="faq-item">
+                <summary class="faq-question">How does the 3-month free trial work?</summary>
+                <p class="faq-answer">You can sign up and start streaming completely free today. You won't be charged until your trial period ends. We'll send a reminder before your trial expires, and you can cancel anytime online without fees.</p>
+              </details>
+              <details class="faq-item">
+                <summary class="faq-question">Can I cancel my subscription anytime?</summary>
+                <p class="faq-answer">Yes, absolutely! There are no long-term commitments or cancellation fees. You can cancel with one click from your account settings whenever you wish.</p>
+              </details>
+              <details class="faq-item">
+                <summary class="faq-question">How does offline listening work on VIBEZ?</summary>
+                <p class="faq-answer">With Premium, you can tap the download button next to any song, album, or playlist. The audio tracks are cached locally in your browser storage so you can enjoy them without internet access.</p>
+              </details>
+              <details class="faq-item">
+                <summary class="faq-question">Can I play music while navigating between tabs?</summary>
+                <p class="faq-answer">Yes! VIBEZ is designed as an interactive single-page app with MediaSession support, meaning your audio playback continues uninterrupted while navigating Home, Search, Your Library, and Premium.</p>
+              </details>
             </div>
           </div>
         </div>
@@ -902,26 +1212,38 @@
         <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M3 22a1 1 0 0 1-1-1V3a1 1 0 0 1 2 0v18a1 1 0 0 1-1 1zM15.5 2.134A1 1 0 0 0 14 3v18a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V3a1 1 0 0 0-1.5-.866l-5 2.887V3a1 1 0 0 0-.5-.866zM16 19.268l4-2.309V4.732l-4 2.31v12.226zM7.5 2.134A1 1 0 0 0 6 3v18a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1V3a1 1 0 0 0-.5-.866l-1-.577z"/></svg>
         <span>Your Library</span>
       </button>
-      <button class="mobile-nav-item" id="mobileNavProfile" data-view="profile">
-        <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-        <span>Profile</span>
+      <button class="mobile-nav-item" id="mobileNavPremium" data-view="premium">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        <span>Premium</span>
       </button>
     </nav>
 
     <!-- REAL HTML5 AUDIO ELEMENT -->
     <audio id="audioPlayer" preload="auto"></audio>
 
+    <!-- CONTEXT MENU BACKDROP (CLICK OUTSIDE DISMISSAL) -->
+    <div class="context-menu-backdrop" id="contextMenuBackdrop" style="display: none;"></div>
+
     <!-- FLOATING CONTEXT MENU -->
     <div class="context-menu" id="trackContextMenu" style="display: none;">
+      <div class="context-menu-header" id="ctxMenuHeader">
+        <img src="" alt="" id="ctxTrackThumb" class="ctx-thumb">
+        <div class="ctx-meta">
+          <span class="ctx-title" id="ctxTrackTitle">Song Title</span>
+          <span class="ctx-artist" id="ctxTrackArtist">Artist Name</span>
+        </div>
+      </div>
       <button class="context-menu-item" id="ctxPlay"><svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M3 1.713a.7.7 0 0 1 1.05-.607l10.89 6.288a.7.7 0 0 1 0 1.212L4.05 14.894A.7.7 0 0 1 3 14.288V1.713z"/></svg> Play song</button>
+      <button class="context-menu-item" id="ctxPlayNext"><svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M12.7 1a.7.7 0 0 0-.7.7v5.15L2.05 1.107A.7.7 0 0 0 1 1.712v12.576a.7.7 0 0 0 1.05.607L12 9.149V14.3a.7.7 0 0 0 .7.7h1.6a.7.7 0 0 0 .7-.7V1.7a.7.7 0 0 0-.7-.7h-1.6z"/></svg> Play next</button>
       <button class="context-menu-item" id="ctxAddToQueue"><svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M15 15H1v-1.5h14V15zm0-4.5H1V9h14v1.5zm-14-7A2.5 2.5 0 0 1 3.5 1h9a2.5 2.5 0 0 1 2.5 2.5v.75H1V3.5z"/></svg> Add to queue</button>
       <button class="context-menu-item" id="ctxAddToPlaylist"><svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M15.25 8a.75.75 0 0 1-.75.75H8.75v5.75a.75.75 0 0 1-1.5 0V8.75H1.5a.75.75 0 0 1 0-1.5h5.75V1.5a.75.75 0 0 1 1.5 0v5.75h5.75a.75.75 0 0 1 .75.75z"/></svg> Add to playlist</button>
       <button class="context-menu-item" id="ctxRemoveFromPlaylist" style="display: none;"><svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M11 1.75V3h3.25a.75.75 0 0 1 0 1.5H13v9.25A2.25 2.25 0 0 1 10.75 16h-5.5A2.25 2.25 0 0 1 3 13.75V4.5H1.75a.75.75 0 0 1 0-1.5H5V1.75C5 .784 5.784 0 6.75 0h2.5C10.216 0 11 .784 11 1.75z"/></svg> Remove from this playlist</button>
-      <button class="context-menu-item" id="ctxToggleLike"><svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M1.69 2A4.582 4.582 0 0 1 8 2.023 4.583 4.583 0 0 1 11.88.75 4.6 4.6 0 0 1 16 5.347c0 3.238-2.923 6.08-7.53 10.203a.75.75 0 0 1-.94 0C2.923 11.427 0 8.585 0 5.347 0 3.233 1.488 1.488 3.69 1.25z"/></svg> <span id="ctxLikeLabel">Save to Liked Songs</span></button>
+      <button class="context-menu-item" id="ctxToggleLike"><svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M1.69 2A4.582 4.582 0 0 1 8 2.023 4.583 4.583 0 0 1 11.88.75 4.6 4.6 0 0 1 16 5.347c0 3.238-2.923 6.08-7.53 10.203a.75.75 0 0 1-.94 0C2.923 11.427 0 8.585 0 5.347 0 3.233 1.488 1.488 3.69 1.25z"/></svg> <span id="ctxLikeLabel">Add to Liked Songs</span></button>
       <button class="context-menu-item" id="ctxViewLyrics"><svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M13.426 2.574a2.831 2.831 0 0 0-4.797 1.55l3.247 3.247a2.831 2.831 0 0 0 1.55-4.797zM10.5 8.75 7.253 5.5l-5.78 5.78a2.828 2.828 0 0 0-.828 2L.64 15.355a.75.75 0 0 0 .848.848l2.075-.005a2.832 2.832 0 0 0 2-1.077L10.5 8.75z"/></svg> View Karaoke Lyrics</button>
       <button class="context-menu-item" id="ctxGoToArtist"><svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0-2.21-2.686-4-6-4s-6 1.79-6 4v1h12v-1z"/></svg> Go to artist</button>
       <div class="dropdown-divider"></div>
       <button class="context-menu-item" id="ctxDownload"><svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M4.995 8.745a.75.75 0 0 1 1.06 0L7.25 9.939V1.75a.75.75 0 0 1 1.5 0v8.189l1.195-1.194a.75.75 0 1 1 1.06 1.06L8 12.81 4.995 9.805a.75.75 0 0 1 0-1.06zM1.75 12.5a.75.75 0 0 1 .75.75v1.25h11V13.25a.75.75 0 0 1 1.5 0v2a.75.75 0 0 1-.75.75H2.5a.75.75 0 0 1-.75-.75v-2a.75.75 0 0 1 .75-.75z"/></svg> Download song (MP3)</button>
+      <button class="context-menu-item" id="ctxShareSong"><svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M13.5 1a2.5 2.5 0 0 0-2.456 2.015L5.61 5.73A2.5 2.5 0 1 0 5.61 10.27l5.434 2.717A2.5 2.5 0 1 0 12 11.5a2.488 2.488 0 0 0-.956-.188L5.61 8.595a2.52 2.52 0 0 0 0-1.19l5.434-2.717A2.49 2.49 0 0 0 13.5 1z"/></svg> Share song</button>
       <button class="context-menu-item" id="ctxCopyLink"><svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M6.22 8.72a.75.75 0 0 0 1.06 1.06l5.25-5.25a3.25 3.25 0 0 0-4.6-4.6L5.68 2.18a3.25 3.25 0 0 0 4.6 4.6l.53-.53a.75.75 0 0 0-1.06-1.06l-.53.53a1.75 1.75 0 0 1-2.48-2.48l2.25-2.25a1.75 1.75 0 0 1 2.48 2.48L6.22 8.72z"/></svg> Copy song link</button>
     </div>
 
@@ -981,7 +1303,11 @@
           <button class="modal-close-btn" id="closeAddToPlaylistModal">✕</button>
         </div>
         <div class="modal-body">
-          <p id="addToPlaylistSongInfo" style="color:var(--text-subdued);margin-bottom:16px;font-size:13px;"></p>
+          <p id="addToPlaylistSongInfo" style="color:var(--text-subdued);margin-bottom:12px;font-size:13px;"></p>
+          <button class="pill-btn modal-create-pl-btn" id="modalCreateNewPlaylistBtn" style="margin-bottom: 14px; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px;">
+            <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M15.25 8a.75.75 0 0 1-.75.75H8.75v5.75a.75.75 0 0 1-1.5 0V8.75H1.5a.75.75 0 0 1 0-1.5h5.75V1.5a.75.75 0 0 1 1.5 0v5.75h5.75a.75.75 0 0 1 .75.75z"/></svg>
+            <span>Create new playlist</span>
+          </button>
           <div class="playlist-pick-list custom-scrollbar" id="playlistPickList">
             <!-- Rendered by JS -->
           </div>
